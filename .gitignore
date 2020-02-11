@@ -6,6 +6,7 @@
 /src/obj
 /src/appsettings.Development.json
 /obj
+/bin
 /appsettings.Development.json
 /Properties
 *.csproj.user
