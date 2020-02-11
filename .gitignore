@@ -5,9 +5,7 @@
 /.vs
 /src/obj
 /src/appsettings.Development.json
-/src/Api.csproj.user
-/src/Properties
 /obj
 /appsettings.Development.json
 /Properties
-/Api.csproj.user
+*.csproj.user
