@@ -57,8 +57,7 @@ POST {TokenEndpoint}
 client_id={EvaluationApiClientId}&   
 client_secret={EvaluationApiClientSecret}&   
 grant_type=code&   
-code={unique_authorization_code}&   
-redirect_uri=https://myapp.com/callback   
+code={unique_authorization_code}   
 
 # Error handling
 Whenever an API call to the Api connector returns an HTTP error code, the EvaluationApi will try to deserialize the HTTP content to a given format. The error objects have a type parameter. 
