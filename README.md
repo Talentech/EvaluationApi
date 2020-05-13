@@ -39,26 +39,26 @@ The workflow for granting the Evaluation API access to the PartnerApp's resource
 
 Below is an example authorization request:
 
-GET {OAuthEndpoint}
-?response_type=code
-&client_id={client-id}
-&redirect_uri={evaluation_api_redirect_uri}
-&state={random-state-parameter}
+GET {OAuthEndpoint}   
+?response_type=code   
+&client_id={client-id}   
+&redirect_uri={evaluation_api_redirect_uri}   
+&state={random-state-parameter}   
 
 Once authenticated, the user should be redirected using a request like this:
 
-GET {redirect_uri}
-?state={unchanged-state-parameter}
-&code={unique_authorization_code}
+GET {redirect_uri}   
+?state={unchanged-state-parameter}   
+&code={unique_authorization_code}   
 
 A token request is then sent back to the Token endpoint by the EvaluationApi:
 
-POST {TokenEndpoint}
-client_id={EvaluationApiClientId}&
-client_secret={EvaluationApiClientSecret}&
-grant_type=code&
-code={unique_authorization_code}&
-redirect_uri=https://myapp.com/callback
+POST {TokenEndpoint}   
+client_id={EvaluationApiClientId}&   
+client_secret={EvaluationApiClientSecret}&   
+grant_type=code&   
+code={unique_authorization_code}&   
+redirect_uri=https://myapp.com/callback   
 
 # Error handling
 Whenever an API call to the Api connector returns an HTTP error code, the EvaluationApi will try to deserialize the HTTP content to a given format. The error objects have a type parameter. 
