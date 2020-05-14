@@ -7,6 +7,6 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.HealthChecks
         /// <summary>
         /// The schema for this is controlled by the Partner. The contents here is identical to what is returned from the OAuth token endpoint.
         /// </summary>
-        public ExamplePartnerTokenDto ProviderConfiguration { get; set; }
+        public ExamplePartnerTokenDto Auth { get; set; }
     }
 }

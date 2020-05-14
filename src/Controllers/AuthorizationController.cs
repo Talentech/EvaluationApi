@@ -4,16 +4,19 @@ using Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Authorization;
 
 namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
 {
-    [Route(Constants.PartnersUrls.DeauthorizationExtension)]
+    [Route("")]
     [ApiController]
-
     public class AuthorizationController : ControllerBase
     {
-
-        [HttpPost("")]
+        /// <summary>
+        /// Called when a customer's admin user revokes access given to the EvaluationApi
+        /// </summary>
+        /// <param name="requestDto"></param>
+        /// <returns></returns>
+        [HttpPost(Constants.PartnersUrls.DeauthorizationEndpoint)]
         public IActionResult Deauthorize(DeauthorizationRequestDto requestDto)
         {
-            //If any steps should to be taken by the PartnerAPI, this is where to make that happen.
+            // Should perform necessary cleanup at the partner side.
             return Ok();
         }
     }

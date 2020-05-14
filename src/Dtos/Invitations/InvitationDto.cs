@@ -11,10 +11,10 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         /// <summary>
         /// The type of this property should be either AssessmentTestInvitationDetailsDto or ReferenceCheckInvitationDetailsDto, depending on the type of service the Partner provides
         /// </summary>
-        public T AssessmentTestDetails { get; set; }
+        public T EvaluationDetails { get; set; }
         /// <summary>
         /// The schema for this is controlled by the Partner. The contents here is identical to what is returned from the OAuth token endpoint.
         /// </summary>
-        public ExamplePartnerTokenDto ProviderConfiguration { get; set; }
+        public ExamplePartnerTokenDto Auth { get; set; }
     }
 }

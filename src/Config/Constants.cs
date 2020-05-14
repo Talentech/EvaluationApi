@@ -4,10 +4,10 @@
     {
         public static class PartnersUrls
         {
-            public const string SendInvitationExtension = "invitations";
-            public const string AvailableTestsExtension = "tests/available-tests";
-            public const string HealthCheckExtension = "health-checks";
-            public const string DeauthorizationExtension = "authorization/deauthorize";
+            public const string SendInvitationEndpoint = "invitations";
+            public const string GetEvaluationFormsEndpoint = "evaluationforms";
+            public const string HealthCheckEndpoint = "health";
+            public const string DeauthorizationEndpoint = "authorization/deauthorize";
         }
     }
 }
