@@ -1,5 +1,5 @@
 # Introduction
-This repository contains a sample implementation for an API Connector for the Talentech Evaluation API written in ASP.NET Core. 
+This repository contains a sample implementation for an API Connector for the Talentech Evaluation API using ASP.NET Core. Run the project locally in order to view OpenAPI docs, which are served at the default route. 
 
 Key terms:
 ----------
@@ -57,8 +57,7 @@ POST {TokenEndpoint}
 client_id={EvaluationApiClientId}&   
 client_secret={EvaluationApiClientSecret}&   
 grant_type=code&   
-code={unique_authorization_code}&   
-redirect_uri=https://myapp.com/callback   
+code={unique_authorization_code}   
 
 # Error handling
 Whenever an API call to the Api connector returns an HTTP error code, the EvaluationApi will try to deserialize the HTTP content to a given format. The error objects have a type parameter. 
