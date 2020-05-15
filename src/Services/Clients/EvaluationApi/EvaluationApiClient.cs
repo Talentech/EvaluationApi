@@ -17,7 +17,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Clients.Eva
             _client = client;
         }
 
-        public async Task PostEvaluationResult(string accessToken, string invitationId, ResultDto dto)
+        public async Task PostStatusUpdate(string accessToken, string invitationId, StatusUpdateDto dto)
         {
             await _client.PostAsync(_config.ResultsEndpoint(invitationId), new StringContent(JsonConvert.SerializeObject(dto)));
         }
