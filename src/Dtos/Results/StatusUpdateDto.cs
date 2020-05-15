@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Common;
 
 namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Results
 {
         public class StatusUpdateDto
         {
+            public Guid InvitationId { get; set; }
             public InvitationStatus Status { get; set; }
             public string Message { get; set; }
             public string Description { get; set; }

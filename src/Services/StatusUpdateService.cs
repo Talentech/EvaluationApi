@@ -27,7 +27,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Services
                 AccessToken = await _tokenClient.RequestAccessTokenAsync();
             }
 
-            await _evaluationApiClient.PostStatusUpdate(AccessToken, invitationId, dto);
+            await _evaluationApiClient.PostStatusUpdate(AccessToken, dto);
         }
     }
 }

@@ -5,6 +5,6 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Clients.Eva
 {
     public interface IEvaluationApiClient
     {
-        Task PostStatusUpdate(string accessToken, string invitationId, StatusUpdateDto dto);
+        Task PostStatusUpdate(string accessToken, StatusUpdateDto dto);
     }
 }

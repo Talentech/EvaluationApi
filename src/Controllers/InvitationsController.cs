@@ -15,7 +15,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
         /// <param name="requestDto"></param>
         /// <returns></returns>
         [HttpPost(Constants.PartnersUrls.SendInvitationEndpoint)]
-        public IActionResult CreateInvitation(InvitationDto<ReferenceCheckInvitationDetailsDto> requestDto)
+        public IActionResult CreateInvitation(InvitationDto<AssessmentTestInvitationDetailsDto> requestDto)
         {
             // If the Partner provides reference checks, swap the template parameter to ReferenceCheckInvitationDetailsDto
             return Ok();
