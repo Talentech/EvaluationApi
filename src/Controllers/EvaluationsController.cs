@@ -16,6 +16,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
         /// <param name="requestDto"></param>
         /// <returns></returns>
         [HttpPost(Constants.PartnersUrls.GetEvaluationFormsEndpoint)]
+        [Produces("application/json")]
         public ActionResult<List<EvaluationDto>> GetEvaluationForms(GetEvaluationsRequestDto requestDto)
         {
 

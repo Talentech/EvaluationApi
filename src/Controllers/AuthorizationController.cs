@@ -14,6 +14,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
         /// <param name="requestDto"></param>
         /// <returns></returns>
         [HttpPost(Constants.PartnersUrls.DeauthorizationEndpoint)]
+        [Produces("application/json")]
         public IActionResult Deauthorize(DeauthorizationRequestDto requestDto)
         {
             // Should perform necessary cleanup at the partner side.

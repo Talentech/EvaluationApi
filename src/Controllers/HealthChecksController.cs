@@ -14,6 +14,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
         /// <param name="requestDto"></param>
         /// <returns></returns>
         [HttpPost(Constants.PartnersUrls.HealthCheckEndpoint)]
+        [Produces("application/json")]
         public ActionResult<HealthCheckResponseDto> HealthCheck(HealthCheckRequestDto requestDto)
         {
             // The Partner is free to perform any checks that can be useful to relay to Talentech
