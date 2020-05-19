@@ -1,4 +1,6 @@
 ﻿using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Talentech.EvaluationApi.SamplePartnerApiConnector.Config;
@@ -19,7 +21,10 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Clients.Eva
 
         public async Task PostStatusUpdate(string accessToken, StatusUpdateDto dto)
         {
-            await _client.PostAsync(_config.ResultsEndpoint, new StringContent(JsonConvert.SerializeObject(dto)));
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var res = await _client.PostAsync(
+                _config.ResultsEndpoint, 
+                new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json"));
         }
     }
 }

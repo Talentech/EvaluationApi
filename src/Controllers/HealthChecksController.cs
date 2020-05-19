@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using Talentech.EvaluationApi.SamplePartnerApiConnector.Config;
+using Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Common;
 using Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.HealthChecks;
 
 namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
@@ -19,7 +21,12 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
         {
             // The Partner is free to perform any checks that can be useful to relay to Talentech
             // This will enable us to indicate for customer users if an integration can be used or not.
-            return Ok();
+            var response = new HealthCheckResponseDto
+            {
+                Status = HealthCheckStatus.Healthy,
+                Errors = new List<ErrorDto>()
+            };
+            return Ok(response);
         }
     }
 }

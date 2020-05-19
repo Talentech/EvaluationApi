@@ -10,6 +10,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Talentech.EvaluationApi.SamplePartnerApiConnector.Config;
+using Talentech.EvaluationApi.SamplePartnerApiConnector.Services;
+using Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Clients.AccessTokens;
+using Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Clients.EvaluationApi;
 
 namespace Talentech.EvaluationApi.SamplePartnerApiConnector
 {
@@ -28,6 +32,16 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector
             services.AddMvcCore()
                 .AddAuthorization()
                 .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
+            var tokenServerConfig = Configuration.GetSection("TokenServerConfig").Get<TokenServerConfig>();
+            var evaluationApiConfig = Configuration.GetSection("EvaluationApiConfig").Get<EvaluationApiConfig>();
+            services
+                .AddSingleton(tokenServerConfig)
+                .AddSingleton(evaluationApiConfig);
+
+            services.AddHttpClient<IEvaluationApiClient, EvaluationApiClient>();
+            services.AddHttpClient<ITokenClient, TokenClient>();
+            services.AddSingleton<StatusUpdateService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
             services.AddSwaggerGen(c =>
@@ -71,7 +85,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector
                     t.Response.Redirect("/swagger");
                     return Task.CompletedTask;
                 });
-
+                endpoints.MapControllers();
             });
         }
     }

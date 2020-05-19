@@ -23,11 +23,11 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
         /// <param name="redirect_uri"></param>
         /// <param name="response_type"></param>
         /// <returns></returns>
-        [HttpGet]
-        public IActionResult Index(string client_id, string state, string redirect_uri, string response_type = "code")
+        [HttpGet("oauth/authorize")]
+        public IActionResult Index(string client_id, string state, string redirect_url, string response_type = "code")
         {
             var code = "A one-time-use, randomly generated authorization code";
-            return Redirect($"{redirect_uri}?state={state}&code={code}");
+            return Redirect($"{redirect_url}?state={state}&code={code}");
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
         /// <param name="client_secret"></param>
         /// <param name="code"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("oauth/token")]
         public ActionResult<ExamplePartnerTokenDto> Token(string client_id, string client_secret, string code)
         {
             

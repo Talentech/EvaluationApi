@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Talentech.EvaluationApi.SamplePartnerApiConnector.Config;
+using Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Common;
 using Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Evaluations;
 
 namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
@@ -21,7 +22,18 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
         {
 
             // The requestDto should uniquely identify a customer's account at the Partner's side, and only data relevant for that customer should be returned
-            return Ok();
+            var res = new List<EvaluationDto>
+            {
+                new EvaluationDto
+                {
+                    Id = "id-from-partner",
+                    Name = "Name from partner",
+                    Description = "Description from partner",
+                    Languages = new List<LanguageDto>(),
+                }
+            };
+
+            return Ok(res);
         }
     }
 }
