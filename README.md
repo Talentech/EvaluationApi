@@ -22,11 +22,14 @@ In addition to this, the Evaluation API requires partners to support an OAuth2.0
 # OAuth
 The OAuth2.0 authorization_code grant is supported by the Evaluation API and is a mandatory requirement for partners who wish to integrate. 
 
-The authorization code flow requires two endpoints implemented by the partner. These can either be served in the API connector, or directly in the Partner App. 
+The Api connector should implement the following endpoints in the API connector. 
 
 The endpoints are:
-- Authorization endpoint 
-- Token endpoint
+- AuthorizationEndpoint 
+- TokenEndpoint
+- DeauthorizationEndpoint
+
+These will typically be simple proxy endpoints that route the request on to a backend OAuth service managed by the partner. 
 
 The workflow for granting the Evaluation API access to the PartnerApp's resources works as follows:
 
@@ -39,7 +42,7 @@ The workflow for granting the Evaluation API access to the PartnerApp's resource
 
 Below is an example authorization request:
 
-GET {OAuthEndpoint}   
+GET {AuthorizationEndpoint}   
 ?response_type=code   
 &client_id={client-id}   
 &redirect_uri={evaluation_api_redirect_uri}   
@@ -47,17 +50,19 @@ GET {OAuthEndpoint}
 
 Once authenticated, the user should be redirected using a request like this:
 
-GET {redirect_uri}   
+GET {evaluation_api_redirect_uri}   
 ?state={unchanged-state-parameter}   
 &code={unique_authorization_code}   
 
-A token request is then sent back to the Token endpoint by the EvaluationApi:
+A token request is then sent back to the Token endpoint by the EvaluationApi. The data posted in the call below should be in "application/x-www-form-urlencoded" format:
 
 POST {TokenEndpoint}   
 client_id={EvaluationApiClientId}&   
 client_secret={EvaluationApiClientSecret}&   
-grant_type=code&   
-code={unique_authorization_code}   
+grant_type=authorization_code&   
+code={unique_authorization_code}&   
+redirect_uri={evaluation_api_redirect_uri}
+
 
 # Error handling
 Whenever an API call to the Api connector returns an HTTP error code, the EvaluationApi will try to deserialize the HTTP content to a given format. The error objects have a type parameter. 
