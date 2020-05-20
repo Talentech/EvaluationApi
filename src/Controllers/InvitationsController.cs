@@ -26,7 +26,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
         /// </summary>
         /// <param name="requestDto"></param>
         /// <returns></returns>
-        [HttpPost(Constants.PartnersUrls.SendInvitationEndpoint)]
+        [HttpPost(Constants.PartnerUrls.SendInvitationEndpoint)]
         [Produces("application/json")]
         public async Task<IActionResult> CreateInvitation(InvitationDto<AssessmentTestInvitationDetailsDto> requestDto)
         {

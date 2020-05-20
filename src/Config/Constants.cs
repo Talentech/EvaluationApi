@@ -2,7 +2,7 @@
 {
     public static class Constants
     {
-        public static class PartnersUrls
+        public static class PartnerUrls
         {
             public const string SendInvitationEndpoint = "invitations";
             public const string GetEvaluationFormsEndpoint = "evaluationforms";
