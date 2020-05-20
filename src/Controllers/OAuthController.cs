@@ -35,9 +35,6 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
         /// Returns a token that uniquely identifies the customer's account at the Partner app. This will be stored by Talentech and used in all subsequent requests.
         /// The partner must validate all the supplied parameters before issuing a token.
         /// </summary>
-        /// <param name="client_id"></param>
-        /// <param name="client_secret"></param>
-        /// <param name="code"></param>
         /// <returns></returns>
         [HttpPost("oauth/token")]
         [Consumes("application/x-www-form-urlencoded")]
