@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.AccessTokens;
 using Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Common;
 
 namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
@@ -24,10 +25,10 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
         /// <param name="response_type"></param>
         /// <returns></returns>
         [HttpGet("oauth/authorize")]
-        public IActionResult Index(string client_id, string state, string redirect_url, string response_type = "code")
+        public IActionResult Index(string client_id, string state, string redirect_uri, string response_type)
         {
             var code = "A one-time-use, randomly generated authorization code";
-            return Redirect($"{redirect_url}?state={state}&code={code}");
+            return Redirect($"{redirect_uri}?state={state}&code={code}");
         }
 
         /// <summary>
@@ -39,9 +40,9 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
         /// <param name="code"></param>
         /// <returns></returns>
         [HttpPost("oauth/token")]
-        public ActionResult<ExamplePartnerTokenDto> Token(string client_id, string client_secret, string code)
+        [Consumes("application/x-www-form-urlencoded")]
+        public ActionResult<ExamplePartnerTokenDto> Token([FromForm]TokenRequestDto request)
         {
-            
             var token = new ExamplePartnerTokenDto
             {
                 CustomerAccountId = "RandomAccountId",
