@@ -11,20 +11,22 @@ Key terms:
 - ApiBaseUrl - The base url of the Api Connector. This is used to resolve the endpoints the Evaluation API expects the API connector to make available.
 
 # What is needed to integrate:
-The items below must be implemented by a partner in order to integrate with the Talentech Evaluation API. 
+The endpoints below must be implemented by a partner in order to integrate with the Talentech Evaluation API. 
 - Invitations endpoint
 - Health check endpoint
-- Deauthorization endpoint (See the oauth section below)
 - Evaluations endpoint
+- Authorization endpoints (See the oauth section below)
 
-In addition to this, the Evaluation API requires partners to support an OAuth2.0 that we can send customer users to in order to grant Talentech the required permissions to access the customer's data.
+The relative URLS implemented by the partners can be found here:
+https://github.com/Talentech/EvaluationApiSampleIntegration/blob/master/src/Config/Constants.cs
+
+The partner should post results back to the EvaluationApi. In order to do this, an access token must be retrieved from a token server managed by Talentech. This token should be included in the authorization header with the api call to the EvaluationApi. A sample implementation of how this can be done in dotnet core can be found here:
+https://github.com/Talentech/EvaluationApiSampleIntegration/blob/master/src/Services/Clients/EvaluationApi/EvaluationApiClient.cs
 
 # OAuth
 The OAuth2.0 authorization_code grant is supported by the Evaluation API and is a mandatory requirement for partners who wish to integrate. 
 
-The Api connector should implement the following endpoints in the API connector. 
-
-The endpoints are:
+The Api connector should implement the following endpoints in the API connector:
 - AuthorizationEndpoint 
 - TokenEndpoint
 - DeauthorizationEndpoint
