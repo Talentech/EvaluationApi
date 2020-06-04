@@ -1,7 +1,7 @@
 # Introduction
 This repository contains a sample implementation for an API Connector for the Talentech Evaluation API using ASP.NET Core. Run the project locally in order to view OpenAPI docs, which are served at the default route. 
 
-Key terms:
+Key terms
 ----------
 - Evaluation API - The Talentech app partners will integrate with
 - Partner App - The existing app managed by the partner.
@@ -10,14 +10,14 @@ Key terms:
 - Results - Results after a candidate has completed an assessment test or reference check. This will be posted from the API connector and back to the Evaluation API
 - ApiBaseUrl - The base url of the Api Connector. This is used to resolve the endpoints the Evaluation API expects the API connector to make available.
 
-# What is needed to integrate:
+# What is needed to integrate
 The endpoints below must be implemented by a partner in order to integrate with the Talentech Evaluation API. 
 - Invitations endpoint
 - Health check endpoint
 - Evaluations endpoint
-- Authorization endpoints (See the oauth section below)
+- Authorization endpoints (See the OAuth section below)
 
-The relative URLS implemented by the partners can be found here:
+The relative URLs implemented by the partners can be found here:
 https://github.com/Talentech/EvaluationApiSampleIntegration/blob/master/src/Config/Constants.cs
 
 The partner should post results back to the EvaluationApi. In order to do this, an access token must be retrieved from a token server managed by Talentech. This token should be included in the authorization header with the api call to the EvaluationApi. A sample implementation of how this can be done in dotnet core can be found here:
