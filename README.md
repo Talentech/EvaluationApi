@@ -42,7 +42,7 @@ The workflow for granting the Evaluation API access to the PartnerApp's resource
 - When the user hits the Evaluation API's redirect_uri endpoint, an API call will be made to exchange the authorization code for a token.
 - Important: The token returned will be stored as-is by us, and will be used in all subsequent API calls. Therefore, the schema is controlled by the partner, and not by Talentech.
 
-Below is an example authorization request:
+Below is an example authorization request. **Please note that the redirect_uri parameter will be url-encoded in the request**:
 
 GET {AuthorizationEndpoint}   
 ?response_type=code   
@@ -65,6 +65,8 @@ grant_type=authorization_code&
 code={unique_authorization_code}&   
 redirect_uri={evaluation_api_redirect_uri}
 
+The {evaluation_api_redirect_uri} is a parameter that should be validated by the partner api. The URL is as follows:
+https://evaluation.talentech.io/Customers/OAuth/Callback
 
 # Error handling
 Whenever an API call to the Api connector returns an HTTP error code, the EvaluationApi will try to deserialize the HTTP content to a given format. The error objects have a type parameter. 
