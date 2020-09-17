@@ -53,10 +53,5 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         /// Can be included in email or in a greeting to the candidate. Optionally sent from ATSes, so a default text should be inserted by partner (if applicable)
         /// </summary>
         public string NoteToCandidate { get; set; }
-
-        /// <summary>
-        /// Can be included in email or in a greeting to the referee. Optionally sent from ATSes, so a default text should be inserted by partner (if applicable)
-        /// </summary>
-        public string NoteToReferee { get; set; }
     }
 }
