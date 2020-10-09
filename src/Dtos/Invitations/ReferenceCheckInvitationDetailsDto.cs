@@ -10,7 +10,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         public Guid InvitationId { get; set; }
 
         /// <summary>
-        /// An id of the ATS sending the request, i.e. "talent-recruiter" or similar. Partner can use this for monitoring purposes.
+        /// An id of the ATS sending the request, i.e. "talentrecruiter", "reachmee" or similar. Partner can use this for monitoring purposes.
         /// </summary>
         public string SourceSystem { get; set; }
 
