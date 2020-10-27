@@ -1,5 +1,9 @@
 # Introduction
-This repository contains a sample implementation for an API Connector for the Talentech Evaluation API using ASP.NET Core. Run the project locally in order to view OpenAPI docs, which are served at the default route. 
+This repository contains a sample implementation for an API Connector for the Talentech Evaluation API using ASP.NET Core. Run the project locally in order to view OpenAPI docs, which are served at the default route.
+
+The API Connector is the component that connects your API with the Talentech ATSes via the Talentech Evaluation API as shown in the high level illustration below.
+
+![Illustration of components](docs/images/components.png)
 
 Key terms
 ----------
