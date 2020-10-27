@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
 {
@@ -53,5 +54,11 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         /// Can be included in email or in a greeting to the candidate. Optionally sent from ATSes, so a default text should be inserted by partner (if applicable)
         /// </summary>
         public string NoteToCandidate { get; set; }
+        
+        /// <summary>
+        /// List of field values referencing the fields in the CustomFields property of the Evaluation form.
+        /// Only applicable if custom fields are included for the forms returned from the /evaluationforms endpoint.
+        /// </summary>
+        public List<FieldValueDto> CustomFieldValues { get; set; } 
     }
 }
