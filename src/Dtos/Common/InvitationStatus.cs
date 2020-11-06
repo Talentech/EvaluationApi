@@ -7,5 +7,6 @@
         Completed = 3,
         Expired = 4,
         Failed = 5,
+        Rejected = 6,
     }
 }
