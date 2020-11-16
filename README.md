@@ -48,16 +48,18 @@ The workflow for granting the Evaluation API access to the PartnerApp's resource
 The {evaluation_api_redirect_uri} is a parameter that should be validated by the partner api. The URL is as follows:
 https://evaluation.talentech.io/Customers/OAuth/Callback
 
+We currently support the following token types: "Refresh token" and "Fixed token". 
+- Refresh tokens are tokens we will use to retrieve new access tokens from the partner if the existing access token is about to expire.
+- Fixed tokens are permanent tokens that will be stored and used as-is. An example of this would be an API key. 
+
+Please note that the samples in the repository currently implement the Fixed token mode.
+
 # Error handling
 Whenever an API call to the Api connector returns an HTTP error code, the EvaluationApi will try to deserialize the HTTP content to a given format. The error objects have a type parameter. 
 - SystemErrors are meant for the Evaluation API to use internally.
 - UserErrors may be shown to end users.
 
 # Sequence diagrams
-Below is a description of the flows we support. The one we'll use for a given partner's app is largely governed by the token type configured for the app in question.
-
-We currently support the following modes: "Refresh token" mode and "Fixed token" mode. Refresh tokens are tokens we will use to retrieve new access tokens from the partner if the existing access token is about to expire, 
-while "Fixed tokens" are permanent tokens that will be stored and used as-is. An example of this would be an API key.
+Below is a description of the flows we support. The one we'll use for a given partner's app is governed by the token type (Fixed or Refresh token) configured for the app in question.
 
 ![Sequence diagrams](docs/images/SequenceDiagrams.png)
-
