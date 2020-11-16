@@ -44,30 +44,6 @@ The workflow for granting the Evaluation API access to the PartnerApp's resource
 - At the authorization endpoint, the customer's user will authenticate themselves, as well as grant the Talentech app the required permissions.
 - Once done, the user must be redirected back to the EvaluationApi's redirect_uri. An authorization code should be included as a query string parameter.
 - When the user hits the Evaluation API's redirect_uri endpoint, an API call will be made to exchange the authorization code for a token.
-- Important: The token returned will be stored as-is by us, and will be used in all subsequent API calls. Therefore, the schema is controlled by the partner, and not by Talentech.
-
-Below is an example authorization request. **Please note that the redirect_uri parameter will be url-encoded in the request**:
-
-GET {AuthorizationEndpoint}   
-?response_type=code   
-&client_id={client-id}   
-&redirect_uri={evaluation_api_redirect_uri}   
-&state={random-state-parameter}   
-
-Once authenticated, the user should be redirected using a request like this:
-
-GET {evaluation_api_redirect_uri}   
-?state={unchanged-state-parameter}   
-&code={unique_authorization_code}   
-
-A token request is then sent back to the Token endpoint by the EvaluationApi. The data posted in the call below should be in "application/x-www-form-urlencoded" format:
-
-POST {TokenEndpoint}   
-client_id={EvaluationApiClientId}&   
-client_secret={EvaluationApiClientSecret}&   
-grant_type=authorization_code&   
-code={unique_authorization_code}&   
-redirect_uri={evaluation_api_redirect_uri}
 
 The {evaluation_api_redirect_uri} is a parameter that should be validated by the partner api. The URL is as follows:
 https://evaluation.talentech.io/Customers/OAuth/Callback
@@ -76,4 +52,12 @@ https://evaluation.talentech.io/Customers/OAuth/Callback
 Whenever an API call to the Api connector returns an HTTP error code, the EvaluationApi will try to deserialize the HTTP content to a given format. The error objects have a type parameter. 
 - SystemErrors are meant for the Evaluation API to use internally.
 - UserErrors may be shown to end users.
+
+# Sequence diagrams
+Below is a description of the flows we support. The one we'll use for a given partner's app is largely governed by the token type configured for the app in question.
+
+We currently support the following modes: "Refresh token" mode and "Fixed token" mode. Refresh tokens are tokens we will use to retrieve new access tokens from the partner if the existing access token is about to expire, 
+while "Fixed tokens" are permanent tokens that will be stored and used as-is. An example of this would be an API key.
+
+![Sequence diagrams](docs/images/SequenceDiagrams.png)
 
