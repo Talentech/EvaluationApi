@@ -59,6 +59,9 @@ Whenever an API call to the Api connector returns an HTTP error code, the Evalua
 - SystemErrors are meant for the Evaluation API to use internally.
 - UserErrors may be shown to end users.
 
+# Retry policies
+When results are posted back to Talentech by the partner, the Evaluation API will act as a gateway and forward the data to the ATS that sent the invitation. As the API calls may occasionally fail, it's important that the partner implements retry policies to ensure that the customer eventually receives their data. The retry policy should include an exponential backoff to prevent overloading the API.
+
 # Sequence diagrams
 Below is a description of the flows we support. The one we'll use for a given partner's app is governed by the token type (Fixed or Refresh token) configured for the app in question.
 
