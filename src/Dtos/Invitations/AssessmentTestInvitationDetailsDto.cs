@@ -46,6 +46,11 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         public string Email { get; set; }
 
         /// <summary>
+        /// The phone number of the candidate. Included if available and applicable in ATSes
+        /// </summary>
+        public string PhoneNumber { get; set; }
+
+        /// <summary>
         /// The language code from the list of languages given by the partner for each evaluation. Partner can ignore this if not applicable.
         /// </summary>
         public string PreferredLanguage { get; set; }
