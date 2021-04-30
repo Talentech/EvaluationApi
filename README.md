@@ -73,7 +73,61 @@ Below is a description of the flows we support. The one we'll use for a given pa
 When using the Evaluation API there are a couple of things to consider when it comes to language support and localization. 
 
 1. You as a partner might provide assessment tests or reference check forms in different languages. You can either choose to have multi-lingual support in a single test/form and describe a list of the supported languages, or you could provide different tests/forms for each language.
+
 2. When an invitation is triggered from an ATS, we will provide information about the preferred language for each candidate.
 
 The business logic for picking the right language when sending the actual invitations to the candidate must be placed in the API Connector.
 
+## Returning language preferences for each evaluation form
+When we call the `/evaluationforms` in the partner's API Connector, you as a partner can return all your available assessment tests or reference check forms. Each entry you return, can have an array with supported languages. 
+
+```
+[
+  {
+    "id": "8763f39e-0552-4ea0-b75d-6cba86d03166",
+    "name": "My Assessment Test",
+    "languages": [
+      {
+        "name": "English", 
+        "languageCode": "en"
+      },
+      {
+        "name": "Norwegian", 
+        "languageCode": "nb-NO"
+      }      
+    ],
+    "description": "This is an example assessment test",
+    ]
+  }
+]
+```
+
+## Choosing language for candidate invitations
+When the ATS triggers an invitation to the API Connector, we include a `preferredLanguage` field for each candidate. This field contains the preferred language in which the candidate would like to receive emails, see UI or any other language specific content. You as a partner need to use this `preferredLanguage` when sending email invitations, picking the right language version of the test/form or any other language related content you might have.
+
+```
+{
+  "evaluationFormId": "string",
+  "preferredLanguage": "string",
+  "candidateDetails": {
+    "candidateId": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "email": "string",
+    "phoneNumber": "string"
+  },
+  "noteToCandidate": "string",
+  "tenantId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "invitationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "integrationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "projectId": "string",
+  "projectName": "string",
+  ...
+}
+```
+
+## Language codes
+The language codes must be on the format.... If you are using different language codes, you need to handle the mapping in the API Connector.
+
+## Supported languages in Talentech
+The Talentech ATSes supports the following languages..
