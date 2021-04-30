@@ -70,4 +70,10 @@ Below is a description of the flows we support. The one we'll use for a given pa
 
 # Language Support
 
-...
+When using the Evaluation API there are a couple of things to consider when it comes to language support and localization. 
+
+1. You as a partner might provide assessment tests or reference check forms in different languages. You can either choose to have multi-lingual support in a single test/form and describe a list of the supported languages, or you could provide different tests/forms for each language.
+2. When an invitation is triggered from an ATS, we will provide information about the preferred language for each candidate.
+
+The business logic for picking the right language when sending the actual invitations to the candidate must be placed in the API Connector.
+
