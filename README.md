@@ -65,6 +65,9 @@ When results are posted back to Talentech by the partner, the Evaluation API wil
 # Sequence diagrams
 Below is a description of the flows we support. The one we'll use for a given partner's app is governed by the token type (Fixed or Refresh token) configured for the app in question.
 
-
-
 ![Sequence diagrams](docs/images/SequenceDiagrams.png)
+
+
+# Language Support
+
+...
