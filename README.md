@@ -132,13 +132,13 @@ The language code format is based on [RFC 4646](https://datatracker.ietf.org/doc
 Examples: nb-NO, en, en-US, en-GB
 
 ## Supported languages in Talentech
-|Language|Code|Talent Recruiter|ReachMee|
----------|----|----------------|--------|
-|English|en|x|x|
-|Norwegian|no|x|x|
-|Norwegian, bokmål|nb-NO|x|x|
-|Norwegian, nynorsk|nn-NO|x|x|
-|Swedish|sv|x|x|
-|Swedish|sv-SE|x|x|
-|Danish|da|x|x|
-|Danish, Denmark|da-DK|x|x|
+|Language|Code|Talent Recruiter|ReachMee|Webcruiter|
+---------|----|----------------|--------|----------|
+|English|en|x|x| |
+|Norwegian|no|x|x| |
+|Norwegian, bokmål|nb-NO|x|x| |
+|Norwegian, nynorsk|nn-NO|x|x| |
+|Swedish|sv|x|x| |
+|Swedish|sv-SE|x|x| |
+|Danish|da|x|x| |
+|Danish, Denmark|da-DK|x|x| |
