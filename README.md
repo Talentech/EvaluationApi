@@ -127,7 +127,7 @@ When the ATS triggers an invitation to the API Connector, we include a `preferre
 ```
 
 ## Language codes
-The language code format is based on [RFC 4646](https://datatracker.ietf.org/doc/html/rfc4646) and is a combination of an ISO 639 two-letter lowercase culture code associated with a language and an ISO 3166 two-letter uppercase subculture code associated with a country or region. The language code can be specified using only the language code and not an associated region specifier. If you are using a different format on your language codes, you need to handle the mapping between our codes and your codes in the API Connector.
+The language code format is based on the ISO 639 two-letter lowercase culture code. If you are using a different format on your language codes, you need to handle the mapping between our codes and your codes in the API Connector.
 
 Examples: nb-NO, en, en-US, en-GB
 
@@ -135,10 +135,6 @@ Examples: nb-NO, en, en-US, en-GB
 |Language|Code|Talent Recruiter|ReachMee|Webcruiter|
 ---------|----|----------------|--------|----------|
 |English|en|x|x| |
-|Norwegian|no|x|x| |
-|Norwegian, bokmål|nb-NO|x|x| |
-|Norwegian, nynorsk|nn-NO|x|x| |
+|Norwegian bokmål|nb|x|x| |
 |Swedish|sv|x|x| |
-|Swedish|sv-SE|x|x| |
 |Danish|da|x|x| |
-|Danish, Denmark|da-DK|x|x| |
