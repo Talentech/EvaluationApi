@@ -129,39 +129,64 @@ The `type` property should have the value `"subheader"`.
 [
     {
         "id": "id-from-partner-1",
-        "name": "Human friendly name for the form",
-        "languages": [
-            {
-                "name": "English",
-                "languageCode": "en"
-            }
-        ],
+        "name": "Form name",
+        "languages": [],
         "description": "string",
         "customFields": [
             {
-                "id": "custom-select-list-id-from-partner-1",
-                "label": "Human friendly label for the select list",
-                "disabled": false,
-                "type": "select",
-                "options": [
-                    {
-                        "id": "select-option-id-from-partner-1",
-                        "label": "Choice 1"
-                    },
-                    {
-                        "id": "select-option-id-2-from-partner-1",
-                        "label": "Choice 2"
-                    }
-                ]
+                "id": "paragraph-1",
+                "type": "paragraph",
+                "label": "Some fields can be defined by the partner. The currently supported building blocks can be seen below."
             },
             {
-                "id": "custom-checkbox-id-from-partner-1",
-                "label": "Human friendly label for the checkbox",
+                "id": "header-1",
+                "type": "header",
+                "label": "Headers can be added",
+            },
+            {
+                "id": "paragraph-2",
+                "type": "paragraph",
+                "label": "... and paragraphs too!"
+            },
+            {
+                "id": "text-input-1",
+                "type": "text",
                 "disabled": false,
+                "label": "This is the label of the text field shown below"
+            },
+            {
+                "id": "subheader-1",
+                "type": "subheader",
+                "label": "Sub headers are also an option"
+            },
+            {
+                "id": "checkbox-1",
                 "type": "checkbox",
-                "value": true
+                "disabled": false,
+                "label": "This is a checkbox",
+                "value": false
+            }
+            {
+                "id": "select-1",
+                "label": "Select lists are also available for use",
+                "disabled": false,
+                "type": "select",
+                "value": "option-1",
+                "options": [
+                    {
+                        "id": "option-1",
+                        "label": "Option 1"
+                    },
+                    {
+                        "id": "option-2",
+                        "label": "Option 2"
+                    }
+                ]
             }
         ]
     }
 ]
 ```
+will result in the following rendering of the form:
+
+![Custom Fields Example](images/20210702_custom_fields_full_example.png)
