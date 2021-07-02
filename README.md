@@ -19,6 +19,7 @@ The endpoints below must be implemented by a partner in order to integrate with 
 - Invitations endpoint
 - Health check endpoint
 - Evaluations endpoint
+  - [Custom field support](docs/custom-fields.md)
 - Authorization endpoints (See the OAuth section below)
 
 The relative URLs implemented by the partners can be found here:
