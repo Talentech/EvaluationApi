@@ -1,7 +1,13 @@
 # Evaluation API custom fields
 The Evaluation API endpoint `/v1/EvaluationForms` allows partners to describe custom fields we can render in the ATS.
 
-Currently we support two types of custom fields: Select lists and checkboxes.
+Currently we support the following types of custom fields:
+- [Select list](#select-list)
+- [Checkbox](#checkbox)
+- [Text input](#text-input)
+- [Paragraph](#paragraph)
+- [Header](#header)
+- [Subheader](#subheader)
 
 Both types are added in the array named `CustomFields` on the `EvaluationForm` structure described in the OpenAPI-specification.
 
@@ -13,12 +19,14 @@ All custom fields share the following properties:
 
 In addition to these there are type-specific properties.
 
+The array of custom fields is _ordered_, that means that the content is displayed in order of its index, and this allows creating sections and subsections of content. See the [full example](#full-example).
+
 ## Select list
 The select list is well suited for showing single choices in the ATS.
+o
+It contains a single extra property, `options`, an array consisting of `Option`s. An `Option` has an `id` property and a `label` property used for the same purposes as described above.
 
-It contains a single extra property, `Options`, an array consisting of `Option` types. An `Option` has an `Id` property and a `Label` property used for the same purposes as described above.
-
-The type property should have the value "select".
+The type property should have the value `"select"`.
 
 ```jsonc
 {
@@ -38,21 +46,85 @@ The type property should have the value "select".
 ## Checkbox
 Checkboxes are well suited for providing additional "multiple choice" inputs to the evaluation form.
 
-A checkbox should contain a single extra property, `Value`, a boolean where `true` represents the checkbox being checked, and `false` represents it being unchecked.
+A checkbox should contain a single extra property, `value`, a boolean where `true` represents the checkbox being checked, and `false` represents it being unchecked.
 
-The type property should have the value "checkbox".
+The type property should have the value `"checkbox"`.
 
 ```jsonc
 {
-    "id": "unique-string-id-for-custom-select-list",
+    "id": "unique-string-id-for-custom-checkbox",
     "disabled": false,
-    "label": "Display label for select list",
+    "label": "Display label for checkbox",
     "type": "checkbox",
     "value": true
 }
 ```
+## Text input
+Text inputs are suited for comments (responses, names of things, feedback).
 
-## Full example response
+Text inputs contain a single extra property, `value`, a string representing the text entered into the text input.
+
+The `type` property should have the value `"text"`
+
+```jsonc
+{
+    "id": "unique-string-id-for-custom-text-input",
+    "disabled": false,
+    "label": "Display label for text input",
+    "type": "text",
+    "value": "Insightful comment, answer or other kind of textual feedback."
+}
+```
+
+## Paragraph
+Paragraphs are suited for descriptions or explanations.
+
+A paragraph does not contain any extra properties, and its label determines its content.
+
+The `type` property should have the value `"paragraph"`
+
+```jsonc
+{
+    "id": "unique-string-id-for-custom-paragraph",
+    "disabled": false,
+    "label": "Incredibly informative and helpful description of something pertaining to the evaluation form.",
+    "type": "paragraph"
+}
+```
+
+## Header
+Headers are suited for descriminating between sections of content.
+
+A header does not contain any extra properties, and its label determines its content.
+
+The `type` property should have the value `"header"`.
+
+```jsonc
+{
+    "id": "unique-string-id-for-custom-header",
+    "disabled": false,
+    "label": "Best Title",
+    "type": "header"
+}
+```
+
+## Subheader
+Subheaders are suited for dividing up content within a section.
+
+A subheader does not contain any extra properties, and its label determines its content.
+
+The `type` property should have the value `"subheader"`.
+
+```jsonc
+{
+    "id": "unique-string-id-for-custom-subheader",
+    "disabled": false,
+    "label": "Best Title",
+    "type": "subheader"
+}
+```
+
+## Full example
 ```jsonc
 [
     {
