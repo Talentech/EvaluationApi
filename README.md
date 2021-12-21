@@ -9,6 +9,7 @@ Key terms
 ----------
 - Evaluation API - The Talentech app partners will integrate with
 - Partner App - The existing app managed by the partner.
+- ATS - Application Tracking System. The source system triggering the invitation.
 - API Connector - A facade API controlled by the Partner. This is what will connect the Evaluation API and the Partner App's APIs. 
 - Invitations - An invitation for a candidate. This will be sent from the Evaluation API to the API connector
 - Results - Results after a candidate has completed an assessment test or reference check. This will be posted from the API connector and back to the Evaluation API
