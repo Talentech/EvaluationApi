@@ -28,6 +28,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
         /// <returns></returns>
         [HttpPost(Constants.PartnerUrls.SendInvitationEndpoint)]
         [Produces("application/json")]
+        [ProducesResponseType(typeof(List<ErrorDto>), 500)]
         public async Task<IActionResult> CreateInvitation(InvitationDto<AssessmentTestInvitationDetailsDto> requestDto)
         {
             // If the Partner provides reference checks, swap the template parameter to ReferenceCheckInvitationDetailsDto
@@ -42,6 +43,15 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
             });
 
             return Ok();
+        }
+
+        /// <summary>
+        /// In the event of an http error code being returned from your api, we will try to deserialize the response body.
+        /// An example response can be seen below.
+        /// </summary>
+        private IActionResult SampleErrorResponse(int statusCode)
+        {
+            return StatusCode(statusCode, ErrorDto.SampleErrorResponseBody());
         }
     }
 }

@@ -19,6 +19,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
         /// <returns></returns>
         [HttpPost(Constants.PartnerUrls.GetEvaluationFormsEndpoint)]
         [Produces("application/json")]
+        [ProducesResponseType(typeof(List<ErrorDto>), 500)]
         public ActionResult<List<EvaluationDto>> GetEvaluationForms(GetEvaluationsRequestDto requestDto)
         {
             // The requestDto should uniquely identify a customer's account at the Partner's side, and only data relevant for that customer should be returned
