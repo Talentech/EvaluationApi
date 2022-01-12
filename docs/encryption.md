@@ -1,55 +1,59 @@
 # Encryption
 
-The Evaluation API supports end to end encryption of data sent between the ATS and the partner using RSA512 asymmetric encryption.
-
-In addition to the transport encryption provided by TLS, you as partner can choose to encrypt certain data fields sent in the payload to add additional security.
-
-If you want to enable encryption for your API connector, you need to support both encrypted invitations triggered by the ATS as well as encrypted results you send back to the ATS.
-
-If the invitation is triggered from an ATS that does not support encryption, you should not send encrypted payloads back.
-
-The ATS will send encrypted invitations if the partner has provided a public key, and the ATS is expected to support encrypted results if they provide public key in the invitation.
-
-
+The Evaluation API supports end to end encryption of data sent between the ATS and the partner using RSA512 asymmetric encryption. In addition to the transport encryption provided by TLS, you as partner can choose to encrypt certain data fields sent in the payload to add additional security. If you want to enable encryption for your API connector, you need to support both encrypted invitations triggered by the ATS as well as encrypted results you send back to the ATS. If the invitation is triggered from an ATS that does not support encryption, you should not send encrypted payloads back. The ATS will send encrypted invitations if the partner has provided a public key, and the ATS is expected to support encrypted results if they provide public key in the invitation.
 
 ## Flow description
-The Partner App decides if encryption should be used by adding a public key in the *Public Key* field in the *Encryption* section in App Configuration.
 
-The ATS will then encrypt fields in the invitation payload using the provided public key and list all the encrypted fields in a separate field called `EncryptedFields` for each relevant section in the JSON payload. The `EncryptedFields` field is an array of strings.
-
-
-The key identifiers are used to easily identify the key pair used when encrypting the payload and enables key pairs to be rotated.
-
-The ATS will provide it's own public key as in the field `SourceSystemPublicKey` when triggering an invitation. If this field is provided, it means the ATS supports encryption and expects the results payload to be encrypted if supported by the partner app.
-
-If you have provided a public key but the ATS does not support encryption, the ATS will just ignore it and send unencrypted invitation payloads. If the invitation does not contain a `SourceSystemPublicKey`, you can not send encrypted result payloads back.
-
-
+The Partner App decides if encryption should be used by adding a public key in the _Public Key_ field in the _Encryption_ section in App Configuration. The ATS will then encrypt fields in the invitation payload using the provided public key and list all the encrypted fields in a separate field called `EncryptedFields` for each relevant section in the JSON payload. The `EncryptedFields` field is an array of strings. The key identifiers are used to easily identify the key pair used when encrypting the payload and enables key pairs to be rotated. The ATS will provide it's own public key as in the field `SourceSystemPublicKey` when triggering an invitation. If this field is provided, it means the ATS supports encryption and expects the results payload to be encrypted if supported by the partner app. If you have provided a public key but the ATS does not support encryption, the ATS will just ignore it and send unencrypted invitation payloads. If the invitation does not contain a `SourceSystemPublicKey`, you can not send encrypted result payloads back.
 
 ## Encrypted payloads
 
 Each encrypted field will contain a key identifier and a base64 encoded RSA payload on the form `keyId:<base64 encoded encrypted string>`.
 
+### Encryption scheme
+
+Payloads must be encrypted with RSA OAEP SHA-512, following the PKCS #1 standard. Public Keys are encoded in the PEM format.
+
+### Key identifier
+
+To allow key rotation, each key pair must be associated with a unique id. Public keys are identified by an alias and provided in the _Key Identifier_ field in the _Encryption_ section in App Configuration. In order to prevent collision between key identifiers please follow the following naming convention, or similar: `partner-<partner slug>-<date of key generation>`, e.g. `partner-samplepartner-2021-01-12`. ATSes will follow the same format when supplying their public key in the payload.
+
+### Key rotation
+
+To make sure key rotation does not affect ongoing processes, key pairs should be available for 30 days before they are taken out of rotation. If keys need to be removed sooner, manual coordination between ATS and partners must be done.
+
 ### Which fields can be encrypted?
 
-Only fields with personal identifiable information supports encrypted values. 
+Only fields containing personal identifiable information supports encrypted values:
 
-**Invitations**
+#### Invitations
 
-TriggeredBy: FirstName, LastName, Email
-EvaluationDetails: FirstName, LastName, Email, PhoneNumber
+| TriggeredBy |
+| ----------- |
+| FirstName   |
+| LastName    |
+| Email       |
 
+| EvaluationDetails |
+| ----------------- |
+| FirstName         |
+| LastName          |
+| Email             |
+| PhoneNumber       |
 
-**Results**
+#### Results
 
-ReportUrls: Uri
+| ReportUrls |
+| ---------- |
+| Uri        |
 
-Encryption is not supported for EvaluationForms and Custom Fields.
+Example payloads are provided below.
 
+_Encryption is not supported for EvaluationForms and Custom Fields._
 
 ### Invitation payload sent by the EvaluationAPI to the partner app
 
-```
+```json
 {
     Version: 1,
     Auth: { … },
@@ -73,10 +77,9 @@ Encryption is not supported for EvaluationForms and Custom Fields.
 }
 ```
 
-
 ### Example of a results payload sent by the partner app
 
-```
+```json
 {
   "TenantId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "InvitationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -102,16 +105,9 @@ Encryption is not supported for EvaluationForms and Custom Fields.
 }
 ```
 
-## Key rotation
-To allow key rotation, each key pair must be associated with a unique id. To make sure key rotation does not affect ongoing processes, key pairs should be available for 30 days before they are taken out of rotation. If keys need to be removed sooner, manual coordination between ATS and partners must be done.
-
-
-
-
-
 # Appendix: Example implementation Node.JS
-Following implements an example encryptor and decryptor. The entire file can be executed without any dependencies and will write out a JavaScript object with encrypted values, and then the same with the values in plain text.
 
+Following implements an example encryptor and decryptor. The entire file can be executed without any dependencies and will write out a JavaScript object with encrypted values, and then the same with the values in plain text.
 
 **crypt.js**
 
