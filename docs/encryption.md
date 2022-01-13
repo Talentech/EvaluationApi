@@ -111,20 +111,18 @@ _Encryption is not supported for EvaluationForms and Custom Fields._
 }
 ```
 
-# Appendix: Example implementation Node.JS
+## Appendix: Example implementation Node.JS
 
 Following implements an example encryptor and decryptor. The entire file can be executed without any dependencies and will write out a JavaScript object with encrypted values, and then the same with the values in plain text.
 
-**crypt.js**
-
-```
+```js
 #!/usr/bin/env node
 const crypto = require("crypto");
 
 // Generate the key and assign it an ID.
 // This only needs to be done once but is included in the example to make it runnable.
 const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
-   modulusLength: 2048,
+  modulusLength: 2048,
 });
 // For this example we hash the public key to get a unique key identifier.
 // Any key identifier will work, it will need to be decided when keys are exchanged.
@@ -136,54 +134,60 @@ const keys = [{ keyId, publicKey, privateKey }];
 
 // Example function to encrypt a value
 const encryptor = (value) => {
-   const encryptedValue = crypto.publicEncrypt(
-       {
-           key: publicKey,
-           padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-           oaepHash: "sha512",
-       },
-       Buffer.from(value)
-   );
-   const base64UrlValue = encryptedValue.toString("base64")
-       .replace(/\+/g, "-")
-       .replace(/\//g, "_");
-   return `${keyId}:${base64UrlValue}`
-}
+  const encryptedValue = crypto.publicEncrypt(
+    {
+      key: publicKey,
+      padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+      oaepHash: "sha512",
+    },
+    Buffer.from(value)
+  );
+  const base64UrlValue = encryptedValue
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_");
+  return `${keyId}:${base64UrlValue}`;
+};
 
 // Example function to decrypt a value
 const decryptor = (value) => {
-   const [keyId, base64UrlValue] = value.split(":", 2);
-   const encryptedValue = Buffer.from(base64UrlValue.replace(/-/g, "+").replace(/_/g, "\/"), "base64");
-   return crypto.privateDecrypt(
-       {
-           key: keys.find(key => key.keyId === keyId).privateKey,
-           padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-           oaepHash: "sha512",
-       },
-       encryptedValue
-   ).toString();
-}
+  const [keyId, base64UrlValue] = value.split(":", 2);
+  const encryptedValue = Buffer.from(
+    base64UrlValue.replace(/-/g, "+").replace(/_/g, "/"),
+    "base64"
+  );
+  return crypto
+    .privateDecrypt(
+      {
+        key: keys.find((key) => key.keyId === keyId).privateKey,
+        padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+        oaepHash: "sha512",
+      },
+      encryptedValue
+    )
+    .toString();
+};
 
 // Example object:
 const encryptedPayload = {
-   Version: 1,
-   Auth: { },
-   TriggeredBy: { },
-   EvaluationDetails: {
-       InvitationId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-       EvaluationFormId: "string",
-       SourceSystem: "string",
-       ProjectId: "string",
-       ProjectName: "string",
-       EncryptedFields: ["FirstName","LastName","Email","PhoneNumber"],
-       FirstName: encryptor("Martijn"),
-       LastName: encryptor("van der Ven"),
-       Email: encryptor("martijn.vanderven@refapp.com"),
-       PhoneNumber: encryptor("+46730000000"),
-       PreferredLanguage: "nl-NL",
-       NoteToCandidate: "Note to the candidate",
-       CustomFieldValues: []
-   }
+  Version: 1,
+  Auth: {},
+  TriggeredBy: {},
+  EvaluationDetails: {
+    InvitationId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    EvaluationFormId: "string",
+    SourceSystem: "string",
+    ProjectId: "string",
+    ProjectName: "string",
+    EncryptedFields: ["FirstName", "LastName", "Email", "PhoneNumber"],
+    FirstName: encryptor("Martijn"),
+    LastName: encryptor("van der Ven"),
+    Email: encryptor("martijn.vanderven@refapp.com"),
+    PhoneNumber: encryptor("+46730000000"),
+    PreferredLanguage: "nl-NL",
+    NoteToCandidate: "Note to the candidate",
+    CustomFieldValues: [],
+  },
 };
 console.log(encryptedPayload);
 // Example output:
@@ -195,7 +199,9 @@ console.log(encryptedPayload);
 // On the receiving end the private key is used to decrypt the fields:
 const decryptedPayload = { ...encryptedPayload };
 for (const field of decryptedPayload.EvaluationDetails.EncryptedFields) {
-   decryptedPayload.EvaluationDetails[field] = decryptor(decryptedPayload.EvaluationDetails[field]);
+  decryptedPayload.EvaluationDetails[field] = decryptor(
+    decryptedPayload.EvaluationDetails[field]
+  );
 }
 console.log(decryptedPayload);
 // Example output:
