@@ -12,11 +12,17 @@ Each encrypted field will contain a key identifier and a base64 encoded RSA payl
 
 ### Encryption scheme
 
-Payloads must be encrypted with RSA OAEP SHA-512, following the PKCS #1 standard. Public Keys are encoded in the PEM format.
+Payloads must be encrypted with RSA OAEP SHA-512, following the PKCS #1 standard. When sent in a payload, public keys are provided in the DER format and Base64 encoded along with the keyId in the format `<keyId>:<base64 encoded public key>`, similar to how encrypted payloads work. Note that when configuring your Partner App, you may also use the PEM format.
+
+Example:
+
+```text
+partner-samplepartner-2021-01-13:MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwuMCKOdptWX0DBKKbHDwXTZSiJxq3pdk97p6OUO9Rwp39RE/YYw0UDYryMbMO8Bhs5CXaXNvQHop2ljCoKtc5o/njuWM2Y+SZhi8exG2dK1a82MCJBM9ds79UaV98R+ZgNEUVUtYuww4tdOCYWuLPYaLo/cueEh6/fJEcirLr53S7EIY3uUOhvCo7HcGBrIvho6kEDxmsi08V5jeBNXMQtI4Fc0mhy+ptHkBT4m6VMZxIo7dpH4RtWXpOR8PBeDbOQRMku43af0RQMpzj/nqZHpB6O1lIUHGaNWCEF7NE6+V1ELFS/BFlb/k1zJrou3EBoc5IZizJtFx3JLaax6v+wIDAQAB
+```
 
 ### Key identifier
 
-To allow key rotation, each key pair must be associated with a unique id. Public keys are identified by an alias and provided in the _Key Identifier_ field in the _Encryption_ section in App Configuration. In order to prevent collision between key identifiers please follow the following naming convention, or similar: `partner-<partner slug>-<date of key generation>`, e.g. `partner-samplepartner-2021-01-12`. ATSes will follow the same format when supplying their public key in the payload.
+To allow key rotation, each key pair must be associated with a unique id. Public keys are identified by an alias and provided in the _Public Key Identifier_ field in the _Encryption_ section in App Configuration. In order to prevent collision between key identifiers please follow the following naming convention, or similar: `partner-<partner slug>-<date of key generation>`, e.g. `partner-samplepartner-2021-01-12`. ATSes will follow the same format when supplying their public key in the payload.
 
 ### Key rotation
 
