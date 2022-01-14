@@ -134,13 +134,13 @@ const crypto = require("crypto");
 const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
   modulusLength: 2048,
 });
-// For this example we hash the public key to get a unique key identifier.
-// Any key identifier will work, it will need to be decided when keys are exchanged.
-const hasher = crypto.createHash("md5");
-hasher.update(publicKey.export({ type: "pkcs1", format: "pem" }));
-const keyId = hasher.digest("hex");
 // Add these to a dummy key storage for later look-up:
+const keyId = "partner-sample-2021-01-14";
 const keys = [{ keyId, publicKey, privateKey }];
+const encodedPublicKey = publicKey
+  .export({ type: "pkcs1", format: "der" })
+  .toString("base64url");
+console.log(`Key format: ${keyId}:${encodedPublicKey}`);
 
 // Example function to encrypt a value
 const encryptor = (value) => {
@@ -152,20 +152,14 @@ const encryptor = (value) => {
     },
     Buffer.from(value)
   );
-  const base64UrlValue = encryptedValue
-    .toString("base64")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_");
+  const base64UrlValue = encryptedValue.toString("base64url");
   return `${keyId}:${base64UrlValue}`;
 };
 
 // Example function to decrypt a value
 const decryptor = (value) => {
   const [keyId, base64UrlValue] = value.split(":", 2);
-  const encryptedValue = Buffer.from(
-    base64UrlValue.replace(/-/g, "+").replace(/_/g, "/"),
-    "base64"
-  );
+  const encryptedValue = Buffer.from(base64UrlValue, "base64url");
   return crypto
     .privateDecrypt(
       {
