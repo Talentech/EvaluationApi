@@ -111,6 +111,16 @@ _Encryption is not supported for EvaluationForms and Custom Fields._
 }
 ```
 
+## Error handling
+
+In the event that either party, ATS or Partner, is unable to process incoming encrypted payloads, an error using status code `422 Unprocessable Entity` should be returned to indicate a problem.
+
+Example scenarios:
+
+- Platform does not support encryption
+- Unknown keyId (the receiver had no key stored that matched the keyId)
+- Decryption failure (the receiver had a key, but decryption failed to yield valid results)
+
 ## Appendix: Example implementation Node.JS
 
 Following implements an example encryptor and decryptor. The entire file can be executed without any dependencies and will write out a JavaScript object with encrypted values, and then the same with the values in plain text.
