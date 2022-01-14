@@ -44,7 +44,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
                             EncryptedFields = Enumerable.Empty<string>(),
                             Name = "Report",
                             Type = UriType.PdfDownload,
-                            Uri = "https://not.a.real.place/candidate.pdf"
+                            Uri = "https://some-document-store.local/candidate.pdf"
                         }
                     },
                     Score = "N/A",
