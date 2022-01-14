@@ -8,11 +8,11 @@ The Partner App decides if encryption should be used by adding a public key in t
 
 ## Encrypted payloads
 
-Each encrypted field will contain a key identifier and a base64 encoded RSA payload on the form `keyId:<base64 encoded encrypted string>`.
+Each encrypted field will contain a key identifier and a base64url encoded RSA payload on the form `keyId:<base64url encoded encrypted string>`.
 
 ### Encryption scheme
 
-Payloads must be encrypted with RSA OAEP SHA-512, following the PKCS #1 standard. When sent in a payload, public keys are provided in the DER format and Base64 encoded along with the keyId in the format `<keyId>:<base64 encoded public key>`, similar to how encrypted payloads work. Note that when configuring your Partner App, you may also use the PEM format.
+Payloads must be encrypted with RSA OAEP SHA-512, following the PKCS #1 standard. When sent in a payload, public keys are provided in the DER format and Base64Url encoded along with the keyId in the format `<keyId>:<base64url encoded public key>`, similar to how encrypted payloads work. Note that when configuring your Partner App, you may also use the PEM format.
 
 Example:
 
