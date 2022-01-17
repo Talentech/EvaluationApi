@@ -14,6 +14,11 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         /// An id of the ATS sending the request, i.e. "talentrecruiter", "reachmee" or similar. Partner can use this for monitoring purposes.
         /// </summary>
         public string SourceSystem { get; set; }
+        
+        /// <summary>
+        /// A public key in the format keyId:publicKey. If supplied, the ATS supports encrypted fields.
+        /// </summary>
+        public string SourceSystemPublicKey { get; set; }
 
         /// <summary>
         /// The ATS project id. Optional to use by the partner. Not necessarily unique across multiple customers.

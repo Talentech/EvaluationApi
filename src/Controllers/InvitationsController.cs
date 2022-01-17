@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Talentech.EvaluationApi.SamplePartnerApiConnector.Config;
@@ -11,7 +12,6 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
 {
     [Route("")]
     [ApiController]
-
     public class InvitationsController : ControllerBase
     {
         private readonly StatusUpdateService _service;
@@ -32,15 +32,25 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
         public async Task<IActionResult> CreateInvitation(InvitationDto<AssessmentTestInvitationDetailsDto> requestDto)
         {
             // If the Partner provides reference checks, swap the template parameter to ReferenceCheckInvitationDetailsDto
-            await _service.SendUpdateToEvaluationApi(requestDto.EvaluationDetails.InvitationId.ToString(), new StatusUpdateDto
-            {
-                InvitationId = requestDto.EvaluationDetails.InvitationId,
-                Description = "Some description",
-                Message = "Completed",
-                ReportUrls = new List<ResultUriDto>(),
-                Score = "N/A",
-                Status = InvitationStatus.Completed
-            });
+            await _service.SendUpdateToEvaluationApi(requestDto.EvaluationDetails.InvitationId.ToString(),
+                new StatusUpdateDto
+                {
+                    InvitationId = requestDto.EvaluationDetails.InvitationId,
+                    Description = "Some description",
+                    Message = "Completed",
+                    ReportUrls = new List<ResultUriDto>
+                    {
+                        new ResultUriDto()
+                        {
+                            EncryptedFields = Enumerable.Empty<string>(),
+                            Name = "Report",
+                            Type = UriType.PdfDownload,
+                            Uri = "https://some-document-store.local/candidate.pdf"
+                        }
+                    },
+                    Score = "N/A",
+                    Status = InvitationStatus.Completed
+                });
 
             return Ok();
         }
