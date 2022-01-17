@@ -12,7 +12,7 @@ Each encrypted field will contain a key identifier and a base64url encoded RSA p
 
 ### Encryption scheme
 
-Payloads must be encrypted with RSA OAEP SHA-512, following the PKCS #1 standard. When sent in a payload, public keys are provided in the DER format and Base64Url encoded along with the keyId in the format `<keyId>:<base64url encoded public key>`, similar to how encrypted payloads work. Note that when configuring your Partner App, you may also use the PEM format.
+Payloads must be encrypted with RSA with a modulus length of 4096, with OAEP SHA-256, following the PKCS #1 standard. **This implies a maximum message length of 446 bytes.**. When sent in a payload, public keys are provided in the DER format and Base64Url encoded along with the keyId in the format `<keyId>:<base64url encoded public key>`, similar to how encrypted payloads work. Note that when configuring your Partner App, you may also use the PEM format.
 
 Example:
 
@@ -132,7 +132,7 @@ const crypto = require("crypto");
 // Generate the key and assign it an ID.
 // This only needs to be done once but is included in the example to make it runnable.
 const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
-  modulusLength: 2048,
+  modulusLength: 4096,
 });
 // Add these to a dummy key storage for later look-up:
 const keyId = "partner-sample-2021-01-14";
@@ -148,7 +148,7 @@ const encryptor = (value) => {
     {
       key: publicKey,
       padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-      oaepHash: "sha512",
+      oaepHash: "sha256",
     },
     Buffer.from(value)
   );
@@ -165,7 +165,7 @@ const decryptor = (value) => {
       {
         key: keys.find((key) => key.keyId === keyId).privateKey,
         padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-        oaepHash: "sha512",
+        oaepHash: "sha256",
       },
       encryptedValue
     )
