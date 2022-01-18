@@ -70,11 +70,7 @@ Response:
 
 ### 2. ATS triggers invitation to a specific evaluationForm
 
-An invitation is sent. This is always done in context of a projectId and for a specific evaluationForm. The list of scoreProfiles is also included, and can here be a subset of the scoreProfiles listed in the EvaluationForms retrieved in step 1. The ATS can configure the project to use only some of the available scoreProfiles.
-
-#### Invitations ScoreProfiles schema
-
-Contains a subset of IDs (string) based on the ScoreProfiles in the EvaluationForms response.
+An invitation is sent. This is always done in context of a projectId and for a specific evaluationForm. In terms of scoreProfiles, this request is unaltered.
 
 #### Example Invitations JSON structure
 
@@ -105,8 +101,7 @@ Contains a subset of IDs (string) based on the ScoreProfiles in the EvaluationFo
         "id": "string",
         "value": "string"
       }
-    ],
-    "scoreProfiles": ["score-id1", "score-id2"]
+    ]
   },
   "auth": {}
 }
@@ -125,7 +120,7 @@ The root `score` property will be deprecated, and is kept for backwards compatib
 | Field | Description               |
 | ----- | ------------------------- |
 | Id    | Unique ID used for lookup |
-| Score | The actual score          |
+| Score | The actual score (float)  |
 
 #### Example Results JSON structure
 
@@ -148,7 +143,7 @@ The root `score` property will be deprecated, and is kept for backwards compatib
   "scoreProfiles": [
     {
       "id": "string",
-      "score": "string"
+      "score": "float"
     }
   ]
 }
