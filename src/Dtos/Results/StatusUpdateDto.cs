@@ -12,5 +12,6 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Results
             public string Description { get; set; }
             public string Score { get; set; }
             public List<ResultUriDto> ReportUrls { get; set; }
+            public List<ScoreProfileResultDto> ScoreProfiles { get; set; }
     }
 }
