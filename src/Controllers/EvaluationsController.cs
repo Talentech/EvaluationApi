@@ -64,6 +64,21 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
                             Type = FieldTypes.Checkbox,
                             Value = false
                         }
+                    },
+                    ScoreProfiles = new List<ScoreProfileDefinitionDto>()
+                    {
+                        new ScoreProfileDefinitionDto()
+                        {
+                            Id = "total-score",
+                            Name = "Total Score",
+                            Description = "The overall score achieved by the candidate"
+                        },
+                        new ScoreProfileDefinitionDto()
+                        {
+                            Id = "sub-score-1",
+                            Name = "Sub-score #1",
+                            Description = "Some category specific score"
+                        }
                     }
                 }
             };

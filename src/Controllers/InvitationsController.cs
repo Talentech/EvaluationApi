@@ -49,7 +49,20 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
                         }
                     },
                     Score = "N/A",
-                    Status = InvitationStatus.Completed
+                    Status = InvitationStatus.Completed,
+                    ScoreProfiles = new List<ScoreProfileResultDto>()
+                    {
+                        new ScoreProfileResultDto()
+                        {
+                            Id = "total-score",
+                            Score = 6.5f
+                        },
+                        new ScoreProfileResultDto()
+                        {
+                            Id = "sub-score-1",
+                            Score = 8.0f
+                        }
+                    }
                 });
 
             return Ok();
