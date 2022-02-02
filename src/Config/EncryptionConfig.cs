@@ -9,7 +9,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Config
         public string KeyId { get; set; }
 
         /// <summary>
-        /// A PKCS#1 RSA Public Key in Base64Url encoding.
+        /// A PKCS#1 RSA Private Key in Base64Url encoding.
         /// Please note that this is _not_ how you should handle your production keys.
         /// </summary>
         public string PrivateKey { get; set; }
