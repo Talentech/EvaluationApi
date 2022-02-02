@@ -14,6 +14,7 @@ using Talentech.EvaluationApi.SamplePartnerApiConnector.Config;
 using Talentech.EvaluationApi.SamplePartnerApiConnector.Services;
 using Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Clients.AccessTokens;
 using Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Clients.EvaluationApi;
+using Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Encryption;
 
 namespace Talentech.EvaluationApi.SamplePartnerApiConnector
 {
@@ -40,12 +41,15 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector
 
             var tokenServerConfig = Configuration.GetSection("TokenServerConfig").Get<TokenServerConfig>();
             var evaluationApiConfig = Configuration.GetSection("EvaluationApiConfig").Get<EvaluationApiConfig>();
+            var encryptionConfig = Configuration.GetSection("EncryptionConfig").Get<EncryptionConfig>();
             services
                 .AddSingleton(tokenServerConfig)
-                .AddSingleton(evaluationApiConfig);
+                .AddSingleton(evaluationApiConfig)
+                .AddSingleton(encryptionConfig);
 
             services.AddHttpClient<IEvaluationApiClient, EvaluationApiClient>();
             services.AddHttpClient<ITokenClient, TokenClient>();
+            services.AddSingleton<IEncryptionService, EncryptionService>();
             services.AddSingleton<StatusUpdateService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);

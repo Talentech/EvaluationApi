@@ -7,6 +7,7 @@ using Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Common;
 using Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations;
 using Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Results;
 using Talentech.EvaluationApi.SamplePartnerApiConnector.Services;
+using Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Encryption;
 
 namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
 {
@@ -15,10 +16,12 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
     public class InvitationsController : ControllerBase
     {
         private readonly StatusUpdateService _service;
+        private readonly IEncryptionService _encryptionService;
 
-        public InvitationsController(StatusUpdateService service)
+        public InvitationsController(StatusUpdateService service, IEncryptionService encryptionService)
         {
             _service = service;
+            _encryptionService = encryptionService;
         }
 
         /// <summary>
@@ -31,6 +34,36 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
         [ProducesResponseType(typeof(List<ErrorDto>), 500)]
         public async Task<IActionResult> CreateInvitation(InvitationDto<AssessmentTestInvitationDetailsDto> requestDto)
         {
+            var sourceSystem = requestDto.EvaluationDetails.SourceSystem;
+            
+            // Persist the source system's public key, if provided
+            if (!string.IsNullOrEmpty(requestDto.EvaluationDetails.SourceSystemPublicKey))
+            {
+                _encryptionService.StoreSourceSystemPublicKey(
+                    sourceSystem, requestDto.EvaluationDetails.SourceSystemPublicKey);
+            }
+
+            var reportUrls = new List<ResultUriDto>
+            {
+                new ResultUriDto()
+                {
+                    EncryptedFields = Enumerable.Empty<string>(),
+                    Name = "Report",
+                    Type = UriType.PdfDownload,
+                    Uri = "https://some-document-store.local/candidate.pdf"
+                }
+            };
+            
+            // Encrypt PII sensitive fields
+            if (_encryptionService.ShouldEncryptForSourceSystem(sourceSystem))
+            {
+                foreach (var reportUrl in reportUrls)
+                {
+                    reportUrl.Uri = _encryptionService.EncryptField(sourceSystem, reportUrl.Uri);
+                    reportUrl.EncryptedFields = new[] {"Uri"};
+                }
+            }
+
             // If the Partner provides reference checks, swap the template parameter to ReferenceCheckInvitationDetailsDto
             await _service.SendUpdateToEvaluationApi(requestDto.EvaluationDetails.InvitationId.ToString(),
                 new StatusUpdateDto
@@ -38,16 +71,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
                     InvitationId = requestDto.EvaluationDetails.InvitationId,
                     Description = "Some description",
                     Message = "Completed",
-                    ReportUrls = new List<ResultUriDto>
-                    {
-                        new ResultUriDto()
-                        {
-                            EncryptedFields = Enumerable.Empty<string>(),
-                            Name = "Report",
-                            Type = UriType.PdfDownload,
-                            Uri = "https://some-document-store.local/candidate.pdf"
-                        }
-                    },
+                    ReportUrls = reportUrls,
                     Score = "N/A",
                     Status = InvitationStatus.Completed,
                     ScoreProfiles = new List<ScoreProfileResultDto>()
