@@ -5,7 +5,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Encryption
     public interface IEncryptionService
     {
         /// <summary>
-        /// Decrypts an encrypted field given that the service is configured with a key Id RSA private key
+        /// Decrypts an encrypted field given that the service is configured with a RSA private key
         /// </summary>
         /// <param name="encryptedField">An encrypted field in the format {keyId}:{base64url encoded encrypted value}</param>
         /// <returns>Decrypted, plaintext value</returns>
