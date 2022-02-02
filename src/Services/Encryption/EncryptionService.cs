@@ -15,8 +15,11 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Encryption
 
     public class EncryptionService : IEncryptionService
     {
-        private readonly Dictionary<string, SourceSystemEncryption> _sourceSystemPublicKeys;
         private readonly EncryptionConfig _config;
+        private readonly RSA _decryptor;
+
+        private readonly object _dictLock = new object();
+        private readonly Dictionary<string, SourceSystemEncryption> _sourceSystemPublicKeys;
 
         public EncryptionService(EncryptionConfig config)
         {
@@ -27,8 +30,6 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Encryption
             _decryptor = RSA.Create();
             _decryptor.ImportRSAPrivateKey(WebEncoders.Base64UrlDecode(_config.PrivateKey), out _);
         }
-
-        private readonly RSA _decryptor;
 
         public string DecryptField(string encryptedField)
         {
@@ -57,7 +58,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Encryption
             lock (_dictLock)
             {
                 if (!_sourceSystemPublicKeys.TryGetValue(sourceSystem, out sourceSystemEncryption))
-                    throw new InvalidOperationException($"No public key for client {sourceSystem} in store");
+                    throw new InvalidOperationException($"No public key for SourceSystem {sourceSystem} in store");
             }
 
             var encryptedValue = sourceSystemEncryption.Encryptor.Encrypt(byteValue, RSAEncryptionPadding.OaepSHA256);
@@ -67,8 +68,6 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Encryption
 
             return encryptedField;
         }
-
-        private readonly object _dictLock = new object();
 
         public void StoreSourceSystemPublicKey(string sourceSystem, string sourceSystemPublicKeyField)
         {
@@ -86,7 +85,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Encryption
                 var encryptor = RSA.Create();
                 encryptor.ImportRSAPublicKey(publicKey, out _);
 
-                _sourceSystemPublicKeys[sourceSystem] = new SourceSystemEncryption()
+                _sourceSystemPublicKeys[sourceSystem] = new SourceSystemEncryption
                 {
                     KeyId = keyId,
                     Encryptor = encryptor
