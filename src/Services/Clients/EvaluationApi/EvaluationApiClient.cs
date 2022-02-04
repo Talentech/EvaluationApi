@@ -21,9 +21,11 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Clients.Eva
 
         public async Task PostStatusUpdate(string accessToken, StatusUpdateDto dto)
         {
+            if (_client.DefaultRequestHeaders.Contains("Authorization"))
+                _client.DefaultRequestHeaders.Remove("Authorization");
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             var res = await _client.PostAsync(
-                _config.ResultsEndpoint, 
+                _config.ResultsEndpoint,
                 new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json"));
         }
     }

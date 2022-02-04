@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
 using Talentech.EvaluationApi.SamplePartnerApiConnector.Config;
+using Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos;
 
 namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Encryption
 {
@@ -31,6 +34,21 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Encryption
             _decryptor.ImportRSAPrivateKey(WebEncoders.Base64UrlDecode(_config.PrivateKey), out _);
         }
 
+        public void Decrypt<T>(T obj) where T : IEncryptedPayload
+        {
+            var props = obj.GetType().GetProperties();
+
+            foreach (var field in obj.EncryptedFields)
+            {
+                var piEncryptedField =
+                    props.FirstOrDefault(p => field.Equals(p.Name, StringComparison.OrdinalIgnoreCase));
+                if (piEncryptedField == null || piEncryptedField.GetValue(obj) is not string propertyValue ||
+                    string.IsNullOrEmpty(propertyValue)) continue;
+
+                piEncryptedField.SetValue(obj, DecryptField(propertyValue));
+            }
+        }
+
         public string DecryptField(string encryptedField)
         {
             if (_decryptor == null)
@@ -48,6 +66,24 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Encryption
             var plaintextValue = Encoding.UTF8.GetString(decryptedValue);
 
             return plaintextValue;
+        }
+
+        public void Encrypt<T>(string sourceSystem, T obj) where T : IEncryptedPayload
+        {
+            var props = obj.GetType().GetProperties()
+                .Where(p => p.GetCustomAttributes<EncryptedFieldAttribute>().Any());
+
+            var encryptedFields = new List<string>();
+            foreach (var piEncryptedField in props)
+            {
+                if (piEncryptedField.GetValue(obj) is not string propertyValue ||
+                    string.IsNullOrEmpty(propertyValue)) continue;
+
+                piEncryptedField.SetValue(obj, EncryptField(sourceSystem, propertyValue));
+                encryptedFields.Add(piEncryptedField.Name);
+            }
+
+            obj.EncryptedFields = encryptedFields;
         }
 
         public string EncryptField(string sourceSystem, string value)

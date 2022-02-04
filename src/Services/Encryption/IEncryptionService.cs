@@ -1,15 +1,28 @@
 using System.Security.Cryptography;
+using Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos;
 
 namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Encryption
 {
     public interface IEncryptionService
     {
         /// <summary>
+        /// Attempts to decrypt an object, e.g. a DTO.
+        /// </summary>
+        void Decrypt<T>(T obj) where T : IEncryptedPayload;
+
+        /// <summary>
         /// Decrypts an encrypted field given that the service is configured with a RSA private key
         /// </summary>
         /// <param name="encryptedField">An encrypted field in the format {keyId}:{base64url encoded encrypted value}</param>
         /// <returns>Decrypted, plaintext value</returns>
         string DecryptField(string encryptedField);
+
+        /// <summary>
+        /// Attempts to encrypt an object using the persisted key for the source system
+        /// </summary>
+        /// <param name="sourceSystem">The source system as provided in e.g. the invitation payload</param>
+        /// <param name="obj">e.g. the DTO</param>
+        void Encrypt<T>(string sourceSystem, T obj) where T : IEncryptedPayload;
 
         /// <summary>
         /// Encrypts a value using the RSA public key stored for the sourceSystem (ATS).

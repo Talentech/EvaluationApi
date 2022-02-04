@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <RootNamespace>Talentech.EvaluationApi.SamplePartnerApiConnector</RootNamespace>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
