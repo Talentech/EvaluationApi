@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
 {
-    public class AssessmentTestInvitationDetailsDto
+    public class AssessmentTestInvitationDetailsDto : IEncryptedPayload
     {
         /// <summary>
         /// Unique id of the invitation. Must be included when posting results back to the EvaluationApi.
@@ -14,7 +15,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         /// An id of the ATS sending the request, i.e. "talentrecruiter", "reachmee" or similar. Partner can use this for monitoring purposes.
         /// </summary>
         public string SourceSystem { get; set; }
-        
+
         /// <summary>
         /// A public key in the format keyId:publicKey. If supplied, the ATS supports encrypted fields.
         /// </summary>
@@ -38,21 +39,25 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         /// <summary>
         /// First name of the candidate
         /// </summary>
+        [EncryptedField]
         public string FirstName { get; set; }
 
         /// <summary>
         /// Last name of the candidate
         /// </summary>
+        [EncryptedField]
         public string LastName { get; set; }
 
         /// <summary>
         /// The email address of the candidate
         /// </summary>
+        [EncryptedField]
         public string Email { get; set; }
 
         /// <summary>
         /// The phone number of the candidate. Included if available and applicable in ATSes
         /// </summary>
+        [EncryptedField]
         public string PhoneNumber { get; set; }
 
         /// <summary>
@@ -64,11 +69,13 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         /// Can be included in email or in a greeting to the candidate. Optionally sent from ATSes, so a default text should be inserted by partner (if applicable)
         /// </summary>
         public string NoteToCandidate { get; set; }
-        
+
         /// <summary>
         /// List of field values referencing the fields in the CustomFields property of the Evaluation form.
         /// Only applicable if custom fields are included for the forms returned from the /evaluationforms endpoint.
         /// </summary>
-        public List<FieldValueDto> CustomFieldValues { get; set; } 
+        public List<FieldValueDto> CustomFieldValues { get; set; }
+
+        public IEnumerable<string> EncryptedFields { get; set; } = Enumerable.Empty<string>();
     }
 }
