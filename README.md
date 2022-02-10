@@ -5,8 +5,13 @@ The API Connector is the component that connects your API with the Talentech ATS
 
 ![Illustration of components](docs/images/components.png)
 
-Key terms
-----------
+
+## Announcements and system status
+To stay up to date about API changes and other announcements about Evaluation API, you can watch this repo. We use the [Discussions](https://github.com/Talentech/EvaluationApi/discussions) to post announcements.
+
+You can also subscribe to [Talentech's status page](https://status.talentech.info) to be notified about incidents.
+
+## Key terms
 - Evaluation API - The Talentech app partners will integrate with
 - Partner App - The existing app managed by the partner.
 - ATS - Application Tracking System. The source system triggering the invitation.
