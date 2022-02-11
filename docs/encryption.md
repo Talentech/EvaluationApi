@@ -12,7 +12,7 @@ Each encrypted field will contain a key identifier and a base64url encoded RSA p
 
 ### Encryption scheme
 
-Payloads must be encrypted with RSA with a modulus length of 4096, with OAEP SHA-256, following the PKCS #1 standard. **This implies a maximum message length of 446 bytes.**. When sent in a payload, public keys are provided in the DER format and Base64Url encoded along with the keyId in the format `<keyId>:<base64url encoded public key>`, similar to how encrypted payloads work. Note that when configuring your Partner App, you may also use the PEM format.
+Payloads must be encrypted with RSA with a modulus length of 4096, with OAEP SHA-256, following the PKCS #1 standard. **This implies a maximum message length of 446 bytes.**. When sent in a payload, public keys are provided in the DER format and Base64Url encoded along with the keyId in the format `<keyId>:<base64url encoded public key>`, similar to how encrypted payloads work. Note that when configuring your Partner App, you may also use the PEM format. EvaluationAPI will validate that public keys are supplied in the correct format and encoding and reject requests if they are not.
 
 Example:
 
@@ -22,7 +22,7 @@ partner-samplepartner-2021-01-13:MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwuM
 
 ### Key identifier
 
-To allow key rotation, each key pair must be associated with a unique id. Public keys are identified by an alias and provided in the _Public Key Identifier_ field in the _Encryption_ section in App Configuration. In order to prevent collision between key identifiers please follow the following naming convention, or similar: `partner-<partner slug>-<date of key generation>`, e.g. `partner-samplepartner-2021-01-12`. ATSes will follow the same format when supplying their public key in the payload.
+To allow key rotation, each key pair must be associated with a unique id, the key identifier, created by the key holder. Public keys are identified by an arbitrary string alias and provided in the _Public Key Identifier_ field in the _Encryption_ section in App Configuration. Beware that the key holder is responsible for avoiding emitting key id collisions upon rotation. We suggest adopting a naming convention. Example: `partner-<partner slug>-<date of key generation>`, e.g. `partner-samplepartner-2021-01-12`.
 
 ### Key rotation
 
@@ -30,7 +30,25 @@ To make sure key rotation does not affect ongoing processes, key pairs should be
 
 ### Which fields can be encrypted?
 
-Only fields containing personal identifiable information supports encrypted values:
+Only fields containing personal identifiable information are supported for encrypted values. To indicate to the consumer that a field contains encrypted data, their names must be added `EncryptedFields` field. All values must be provided in PascalCase.
+
+Example of valid values:
+
+```json
+{
+  "EncryptedFields": ["FirstName","LastName","Email","PhoneNumber"]
+}
+```
+
+Example of invalid values (camelCase):
+
+```json
+{
+  "EncryptedFields": ["firstName","lastName","email","phoneNumber"]
+}
+```
+
+For reference, the valid EncryptedFields values are listed below:
 
 #### Invitations
 
