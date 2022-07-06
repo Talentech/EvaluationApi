@@ -147,3 +147,9 @@ Examples: nb-NO, en, en-US, en-GB
 |Norwegian bokmål|nb|x|x| |
 |Swedish|sv|x|x| |
 |Danish|da|x|x| |
+
+
+# Versioning and backwards compability
+
+We consider adding new fields to payloads we post and payloads we receive as non-breaking changes.
+Changes to the APIs are announced in the [announcements section](https://github.com/Talentech/EvaluationApi/discussions/categories/announcements).
