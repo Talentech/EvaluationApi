@@ -20,6 +20,10 @@ By including `sourceSystem`, `projectId` and `projectName` as optional parameter
 
 **Note to ATSes** If/when partners start returning project specific evaluation forms, you __must__ make sure to cache evaluation forms per project and not per tenant. Cache key could be `tenantId+projectId+evaluationFormId`.
 
+### Overall flow
+
+![Sequence diagram](project-provisioning/project-provisioning-flow.drawio.svg)
+
 
 ## Required API changes
 
