@@ -10,11 +10,11 @@ The ATS requests all available evaluation forms for the tenant. The context must
 
 #### EvaluationForms ScoreProfiles schema
 
-| Field       | Description                                     |
-| ----------- | ----------------------------------------------- |
-| Id          | Unique ID used for lookup                       |
-| Name        | Human readable name used in e.g. column headers |
-| Description | A longer description to explain the score       |
+| Field       | Description                                                                                      |
+| ----------- | ------------------------------------------------------------------------------------------------ |
+| Id          | Unique ID used for lookup                                                                        |
+| Name        | Human readable name used in e.g. column headers. Name should be one word without space or dashes |
+| Description | A longer description to explain the score                                                        |
 
 #### Example EvaluationForms JSON structure
 
