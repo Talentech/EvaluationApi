@@ -12,7 +12,7 @@ The ATS requests all available evaluation forms for the tenant. The context must
 
 | Field       | Description                                                                                      |
 | ----------- | ------------------------------------------------------------------------------------------------ |
-| Id          | Unique ID used for lookup. Name should be one word without space or dashes                       |
+| Id          | Unique ID used for lookup. The ID should be one word without spaces.                             |
 | Name        | Human readable name used in e.g. column headers.                                                 |
 | Description | A longer description to explain the score                                                        |
 
