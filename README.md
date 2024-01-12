@@ -143,10 +143,10 @@ Examples: nb-NO, en, en-US, en-GB
 ## Supported languages in Talentech
 |Language|Code|Talent Recruiter|ReachMee|Webcruiter|
 ---------|----|----------------|--------|----------|
-|English|en|x|x| |
-|Norwegian bokmål|nb|x|x| |
-|Swedish|sv|x|x| |
-|Danish|da|x|x| |
+|English|en|x|x|x|
+|Norwegian bokmål|nb|x|x|x|
+|Swedish|sv|x|x|x|
+|Danish|da|x|x|x|
 
 
 # Versioning and backwards compability
