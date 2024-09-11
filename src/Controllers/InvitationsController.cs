@@ -92,7 +92,10 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
 
             _logger.Log(LogLevel.Information, $"Sending payload: {JsonConvert.SerializeObject(statusUpdate)}");
 
-            // If the Partner provides reference checks, swap the template parameter to ReferenceCheckInvitationDetailsDto
+            // If the Partner provides reference checks, swap the template parameter to either:
+            // ReferenceCheckInvitationDetailsDto
+            // ContractInvitationDetailsDto
+            // BackgroundCheckInvitationDetailsDto
             await _service.SendUpdateToEvaluationApi(requestDto.EvaluationDetails.InvitationId.ToString(),
                 statusUpdate);
 

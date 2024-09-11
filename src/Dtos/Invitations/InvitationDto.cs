@@ -9,7 +9,12 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         /// </summary>
         public TriggeredByDto TriggeredBy { get; set; }
         /// <summary>
-        /// The type of this property should be either AssessmentTestInvitationDetailsDto or ReferenceCheckInvitationDetailsDto, depending on the type of service the Partner provides
+        /// The type of this property should be either
+        /// * AssessmentTestInvitationDetailsDto
+        /// * ReferenceCheckInvitationDetailsDto
+        /// * ContractInvitationDetailsDto
+        /// * BackgroundCheckInvitationDetailsDto,
+        /// depending on the type of service the Partner provides
         /// </summary>
         public T EvaluationDetails { get; set; }
         /// <summary>
