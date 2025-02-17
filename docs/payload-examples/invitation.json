@@ -1,0 +1,38 @@
+{
+  "version": 0,
+  "triggeredBy": {
+    "encryptedFields": [
+      "string"
+    ],
+    "email": "string",
+    "firstName": "string",
+    "lastName": "string"
+  },
+  "evaluationDetails": {
+    "invitationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "evaluationFormId": "string",
+    "sourceSystem": "string",
+    "sourceSystemPublicKey": "string",
+    "projectId": "string",
+    "projectName": "string",
+    "encryptedFields": [
+      "string"
+    ],
+    "firstName": "string",
+    "lastName": "string",
+    "email": "string",
+    "phoneNumber": "string",
+    "preferredLanguage": "string",
+    "noteToCandidate": "string",
+    "orgUnitId": "string",
+    "orgUnitName": "string",
+    "externalOrgUnitId": "string",
+    "customFieldValues": [
+      {
+        "id": "string",
+        "value": "string"
+      }
+    ]
+  },
+  "auth": "string"
+}
