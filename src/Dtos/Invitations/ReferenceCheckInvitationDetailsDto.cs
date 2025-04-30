@@ -37,6 +37,16 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         public string EvaluationFormId { get; set; }
 
         /// <summary>
+        /// The candidate personal ID. Optional to use by the partner.
+        /// </summary>
+        /// <remarks>
+        /// * Can be encrypted
+        /// * In case it is encrypted, value "PersonalId" should be presented in the EncryptedFields list.
+        /// </remarks>
+        [EncryptedField]
+        public string? PersonalId { get; init; }          
+        
+        /// <summary>
         /// First name of the candidate
         /// </summary>
         [EncryptedField]
@@ -60,6 +70,11 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         [EncryptedField]
         public string PhoneNumber { get; set; }
 
+        /// <summary>
+        /// The address of the candidate. Optional to use by the partner.
+        /// </summary>        
+        public PartnerAddressDto? Address { get; init; }          
+        
         /// <summary>
         /// The language code from the list of languages given by the partner for each evaluation. Partner can ignore this if not applicable.
         /// </summary>
