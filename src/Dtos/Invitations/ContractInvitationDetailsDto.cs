@@ -37,7 +37,7 @@ public class ContractInvitationDetailsDto
         public string EvaluationFormId { get; set; }
 
         /// <summary>
-        /// The candidate personal ID. Optional to use by the partner.
+        /// The candidate personal ID. Optional to use by the partner
         /// </summary>
         /// <remarks>
         /// * Can be encrypted
