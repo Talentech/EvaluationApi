@@ -1,0 +1,45 @@
+[
+   {
+      "id":"your-form-id-001",
+      "name":"Logic test 1",
+      "languages":[
+         
+      ],
+      "description":"This is a logic test that can be sent to candidates",
+      "customFields":[
+         {
+            "id":"dropdown-1",
+            "value":"Please make a selection",
+            "label":"Choose role",
+            "type":"select",
+            "disabled":false,
+            "options":[
+               {
+                  "id":"option-1",
+                  "label":"Option 1"
+               },
+               {
+                  "id":"option-2",
+                  "label":"Option 2"
+               },
+               {
+                  "id":"option-3",
+                  "label":"Option 3"
+               }
+            ],
+         }
+      ],
+      "scoreProfiles":[
+         {
+            "id": "score-1",
+            "name": "Main score",
+            "description": "This is the description for the main score"
+          },
+          {
+            "id": "capability-2",
+            "name": "Capability score",
+            "description": "Some description..."
+          }
+      ]
+   }
+]

@@ -1,0 +1,26 @@
+{
+   "InvitationId":"2c2d246a-56e0-42b6-8702-58becb4e90a8",
+   "Status":3,
+   "Message":"Test completed",
+   "Description":"A more detailed description",
+   "ReportUrls":[
+      {
+         "EncryptedFields":[
+            
+         ],
+         "Name":"Report",
+         "Type":1,
+         "Uri":"https://url-to-results"
+      }
+   ],
+   "ScoreProfiles":[
+      {
+         "Id":"1",
+         "Score":30
+      },
+      {
+         "Id":"2",
+         "Score":58
+      }
+   ]
+}
