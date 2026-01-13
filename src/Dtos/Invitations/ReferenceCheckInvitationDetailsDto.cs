@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
 {
@@ -91,6 +90,6 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         /// </summary>
         public List<FieldValueDto> CustomFieldValues { get; set; }
 
-        public IEnumerable<string> EncryptedFields { get; set; } = Enumerable.Empty<string>();
+        public IEnumerable<string> EncryptedFields { get; set; } = [];
     }
 }
