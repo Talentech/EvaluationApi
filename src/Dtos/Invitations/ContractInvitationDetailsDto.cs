@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -37,7 +37,15 @@ public class ContractInvitationDetailsDto
         public string EvaluationFormId { get; set; }
 
         /// <summary>
+        /// The ATS id of the candidate. Stable and unique within a customer instance, so it can be used to
+        /// recognise the same candidate across several invitations. Not unique across customers.
+        /// </summary>
+        public string? CandidateId { get; set; }
+
+        /// <summary>
         /// The candidate personal ID. Optional to use by the partner.
+        /// Only populated on a Contract invitation, where the signing provider needs to identify the
+        /// signer. Null on every other evaluation type.
         /// </summary>
         /// <remarks>
         /// * Can be encrypted
@@ -72,6 +80,8 @@ public class ContractInvitationDetailsDto
 
         /// <summary>
         /// The address of the candidate. Optional to use by the partner.
+        /// Only populated on a Contract invitation, where the signing provider needs to identify the
+        /// signer. Null on every other evaluation type.
         /// </summary>        
         public PartnerAddressDto? Address { get; init; }          
         
@@ -84,6 +94,23 @@ public class ContractInvitationDetailsDto
         /// Can be included in email or in a greeting to the candidate. Optionally sent from ATSes, so a default text should be inserted by partner (if applicable)
         /// </summary>
         public string NoteToCandidate { get; set; }
+
+        /// <summary>
+        /// Talentech's id of the department / org unit the recruitment project belongs to. It follows the
+        /// project, not the user who triggered the request.
+        /// </summary>
+        public string? OrgUnitId { get; init; }
+
+        /// <summary>
+        /// The name of that same department / org unit.
+        /// </summary>
+        public string? OrgUnitName { get; init; }
+
+        /// <summary>
+        /// The customer's own id for the same org unit, where they maintain one - typically because they sync
+        /// their org structure from another system. Sent when the ATS holds it, so treat it as optional.
+        /// </summary>
+        public string? ExternalOrgUnitId { get; init; }
 
         /// <summary>
         /// List of field values referencing the fields in the CustomFields property of the Evaluation form.

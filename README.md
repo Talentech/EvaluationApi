@@ -1,4 +1,4 @@
-# Getting started
+﻿# Getting started
 This repository contains documentation and a sample implementation showing how you can use the **Talentech Evaluation API**. The Evaluation API lets you hook into the candidate evaluation flow in any of the Talentech application tracking systems.
 
 The sample implementation is written using C# and ASP.NET and can be used as starting point or inspiration when integrating with the Evaluation API. Run the project locally in order to view OpenAPI docs, which is served at the default route.
@@ -32,6 +32,12 @@ The endpoints below must be implemented by a partner in order to integrate with 
 
 The relative URLs implemented by the partners can be found here:
 https://github.com/Talentech/EvaluationApiSampleIntegration/blob/master/src/Config/Constants.cs
+
+## Optional endpoints you can call
+- [Checking what a user may see](docs/permissions.md) - ask, per invitation, which permissions a given user holds in the ATS.
+
+## Payload casing
+Invitation payloads sent to your connector use **PascalCase** property names (`InvitationId`, `EvaluationDetails`, `CandidateId`), as in [docs/payload-examples/invitation.json](docs/payload-examples/invitation.json). Our own endpoints accept either casing on what you send us.
 
 The partner should post results back to the EvaluationApi. In order to do this, an access token must be retrieved from a token server managed by Talentech. This token should be included in the authorization header with the api call to the EvaluationApi. A sample implementation of how this can be done in dotnet core can be found here:
 https://github.com/Talentech/EvaluationApiSampleIntegration/blob/master/src/Services/Clients/EvaluationApi/EvaluationApiClient.cs

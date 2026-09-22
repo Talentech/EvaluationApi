@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
 {
-    public class AssessmentTestInvitationDetailsDto : IEncryptedPayload
+    public class FeedbackInvitationDetailsDto : IEncryptedPayload
     {
         /// <summary>
         /// Unique id of the invitation. Must be included when posting results back to the EvaluationApi.
@@ -51,7 +51,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         /// * In case it is encrypted, value "PersonalId" should be presented in the EncryptedFields list.
         /// </remarks>
         [EncryptedField]
-        public string? PersonalId { get; init; }
+        public string? PersonalId { get; init; }          
         
         /// <summary>
         /// First name of the candidate
@@ -76,14 +76,14 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         /// </summary>
         [EncryptedField]
         public string PhoneNumber { get; set; }
-        
+
         /// <summary>
         /// The address of the candidate. Optional to use by the partner.
         /// Only populated on a Contract invitation, where the signing provider needs to identify the
         /// signer. Null on every other evaluation type.
         /// </summary>        
-        public PartnerAddressDto? Address { get; init; }        
-
+        public PartnerAddressDto? Address { get; init; }          
+        
         /// <summary>
         /// The language code from the list of languages given by the partner for each evaluation. Partner can ignore this if not applicable.
         /// </summary>
