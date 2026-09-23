@@ -5,6 +5,11 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
     public class InvitationDto<T>
     {
         /// <summary>
+        /// The version of the invitation payload. 1 today.
+        /// </summary>
+        public int Version { get; set; }
+
+        /// <summary>
         /// Information about the ATS user who executes the request
         /// </summary>
         public TriggeredByDto TriggeredBy { get; set; }
@@ -13,7 +18,8 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         /// * AssessmentTestInvitationDetailsDto
         /// * ReferenceCheckInvitationDetailsDto
         /// * ContractInvitationDetailsDto
-        /// * BackgroundCheckInvitationDetailsDto,
+        /// * BackgroundCheckInvitationDetailsDto
+        /// * FeedbackInvitationDetailsDto,
         /// depending on the type of service the Partner provides
         /// </summary>
         public T EvaluationDetails { get; set; }
