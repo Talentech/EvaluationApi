@@ -74,6 +74,9 @@ Whenever an API call to the Api connector returns an HTTP error code, the Evalua
 - SystemErrors are meant for the Evaluation API to use internally.
 - UserErrors may be shown to end users.
 
+# Correlation id
+Every call the Evaluation API makes to your API connector carries an `X-Correlation-ID` header. You may also send one on the calls you make to us (`/results`, `/permissions`): a value of 1 to 64 characters from `A-Z`, `a-z`, `0-9`, `.`, `_` and `-` is kept as is, anything else is replaced. The id comes back in the same header on every response. Quote it when you contact Talentech support about a specific call, so we can find that request in our logs.
+
 # Retry policies
 When results are posted back to Talentech by the partner, the Evaluation API will act as a gateway and forward the data to the ATS that sent the invitation. As the API calls may occasionally fail, it's important that the partner implements retry policies to ensure that the customer eventually receives their data. The retry policy should include an exponential backoff to prevent overloading the API.
 
