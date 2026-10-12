@@ -19,28 +19,50 @@ You can also subscribe to [Talentech's status page](https://status.talentech.inf
 - ATS - Application Tracking System. The source system triggering the invitation.
 - API Connector - A facade API controlled by the Partner. This is what will connect the Evaluation API and the Partner App's APIs. 
 - Invitations - An invitation for a candidate. This will be sent from the Evaluation API to the API connector
-- Results - Results after a candidate has completed an assessment test or reference check. This will be posted from the API connector and back to the Evaluation API
+- Results - Status updates and results for an invitation (reference check, assessment test, background check, contract or feedback). These are posted from the API connector back to the Evaluation API
 - ApiBaseUrl - The base url of the Api Connector. This is used to resolve the endpoints the Evaluation API expects the API connector to make available.
+- Evaluation API base URL - The base URL for calling the Evaluation API, given to you by Talentech, for example `https://<host>/api`. Paths in these docs, such as `/v1/Results`, are relative to it.
+- Token endpoint - The Talentech token endpoint you get access tokens from, given to you by Talentech together with your client id and client secret.
 
 # What is needed to integrate
 The endpoints below must be implemented by a partner in order to integrate with the Talentech Evaluation API. 
-- Invitations endpoint
-- Health check endpoint
-- Evaluations endpoint
+- Invitations endpoint, `POST {ApiBaseUrl}/invitations`
+- Evaluations endpoint, `POST {ApiBaseUrl}/evaluationforms`
   - [Custom field support](docs/custom-fields.md)
 - Authorization endpoints (See the OAuth section below)
 
-The relative URLs implemented by the partners can be found here:
-https://github.com/Talentech/EvaluationApiSampleIntegration/blob/master/src/Config/Constants.cs
+The authorization endpoints have no fixed path. Your app configuration holds an auth server base URL and a path for each of them. [src/Config/Constants.cs](src/Config/Constants.cs) shows the paths this sample uses.
+
+Your app configuration also shows a `{ApiBaseUrl}/health` URL. The Evaluation API does not call it today.
 
 ## Optional endpoints you can call
 - [Checking what a user may see](docs/permissions.md) - ask, per invitation, which permissions a given user holds in the ATS.
 
 ## Payload casing
-Invitation payloads sent to your connector use **PascalCase** property names (`InvitationId`, `EvaluationDetails`, `CandidateId`), as in [docs/payload-examples/invitation.json](docs/payload-examples/invitation.json). Our own endpoints accept either casing on what you send us.
+Every payload the Evaluation API sends you (invitations, evaluation forms requests and deauthorization requests) uses **PascalCase** property names (`InvitationId`, `EvaluationDetails`, `CandidateId`), as in [docs/payload-examples/invitation.json](docs/payload-examples/invitation.json). Empty values are sent as `null`. In Fixed token mode, `Auth` holds the response of your token endpoint exactly as you returned it (see [OAuth](#oauth)).
 
-The partner should post results back to the EvaluationApi. In order to do this, an access token must be retrieved from a token server managed by Talentech. This token should be included in the authorization header with the api call to the EvaluationApi. A sample implementation of how this can be done in dotnet core can be found here:
-https://github.com/Talentech/EvaluationApiSampleIntegration/blob/master/src/Services/Clients/EvaluationApi/EvaluationApiClient.cs
+Our own endpoints accept either casing on what you send us, and enum values as the number or the name.
+
+## Posting results
+Post status updates and results to `POST {Evaluation API base URL}/v1/Results` with `Content-Type: application/json`. Authenticate with an access token from the token endpoint: request it with the OAuth 2.0 client credentials grant (`grant_type=client_credentials`, `client_id`, `client_secret`) and send it as `Authorization: Bearer <token>`. The token must be issued for the audience `hrmts-assessmentfx-api-scope`. [EvaluationApiClient.cs](src/Services/Clients/EvaluationApi/EvaluationApiClient.cs) and [TokenClient.cs](src/Services/Clients/AccessTokens/TokenClient.cs) show how this can be done in .NET.
+
+The body, as in [docs/payload-examples/results.json](docs/payload-examples/results.json):
+- `InvitationId` (required): the `InvitationId` from the invitation.
+- `Status` (required): `1` Created, `2` InProgress, `3` Completed, `4` Expired, `5` Failed, `6` Rejected. Send the number or the name. It is passed to the ATS as it is.
+- `Message`, `Description`: free text for the ATS.
+- `Score`: a string. A JSON number is rejected.
+- `ReportUrls` (optional): a list of `Name`, `Type` (`0` WebPage, `1` PdfDownload), `Uri` and `EncryptedFields`. Leave `EncryptedFields` out or empty, or send `["Uri"]` when `Uri` is encrypted (see [encryption](docs/encryption.md)). Never send it as `null`.
+- `ScoreProfiles` (optional): a list of `Id` and `Score` (a number), see [score profiles](docs/score-profiles.md).
+
+The responses:
+- `200`: the result was passed to the ATS.
+- `400`: the body could not be read, for example `Score` sent as a number or `EncryptedFields` sent as `null`. The response lists the errors. Fix the body before you send it again.
+- `401`: the access token is missing or not valid.
+- `404`: there is no invitation with that id. Do not retry.
+- `410`: the integration has been archived. The result was still passed to the ATS, so stop sending updates for this invitation.
+- Any other status: retry later, see [Retry policies](#retry-policies).
+
+When the ATS itself rejects a result, we answer with the status code the ATS gave us and a text that starts with `Something went wrong when posting data to ATS`.
 
 # OAuth
 The OAuth2.0 authorization_code grant is supported by the Evaluation API and is a mandatory requirement for partners who wish to integrate. 
@@ -55,30 +77,45 @@ These will typically be simple proxy endpoints that route the request on to a ba
 The workflow for granting the Evaluation API access to the PartnerApp's resources works as follows:
 
 - When an ATS customer subscribes to a partner integration, we will need to get their authorization details in order to access their data in the Partner's API on their behalf. 
-- This is done by redirecting an admin user from the customer to the Authorization endpoint (which is managed by the Partner).
+- This is done by redirecting an admin user from the customer to the Authorization endpoint (which is managed by the Partner), with `client_id`, `response_type=code`, `redirect_uri`, `state` and, when your app has scopes configured, `scope` in the query string.
 - At the authorization endpoint, the customer's user will authenticate themselves, as well as grant the Talentech app the required permissions.
-- Once done, the user must be redirected back to the EvaluationApi's redirect_uri. An authorization code should be included as a query string parameter.
+- Once done, the user must be redirected back to the EvaluationApi's redirect_uri, with the authorization `code` and the unchanged `state` as query string parameters. This must happen within 10 minutes of the redirect to you.
 - When the user hits the Evaluation API's redirect_uri endpoint, an API call will be made to exchange the authorization code for a token.
 
 The {evaluation_api_redirect_uri} is a parameter that should be validated by the partner api. The URL is as follows:
 https://evaluation.talentech.io/Customers/OAuth/Callback
 
 We currently support the following token types: "Refresh token" and "Fixed token". 
-- Refresh tokens are tokens we will use to retrieve new access tokens from the partner if the existing access token is about to expire.
-- Fixed tokens are permanent tokens that will be stored and used as-is. An example of this would be an API key. 
+- Refresh tokens are tokens we will use to retrieve new access tokens from the partner if the existing access token is about to expire. Your token endpoint must return `access_token` and `refresh_token`, and the access token must be a JWT with an `exp` claim. We send it as `Authorization: Bearer <access_token>`, and `Auth` is `null`. From 10 minutes before `exp`, we call your token endpoint with `grant_type=refresh_token`, `refresh_token`, `client_id` and `client_secret`. That response must again contain both `access_token` and `refresh_token` (the refresh token may be the same as before). If either is missing, the refresh counts as failed: we keep using the current access token until it expires, and after that our calls fail until a refresh succeeds or the customer connects again. The sequence diagram below shows `refresh_token` as optional in this response. It is required.
+- Fixed tokens are permanent tokens that will be stored and used as-is. An example of this would be an API key. Whatever your token endpoint returns is stored and sent back in the `Auth` property in the body of every call we make to you, so it must be valid JSON. No Authorization header is sent.
+
+When a customer disconnects the integration, we delete the stored token and then call your deauthorize endpoint. For a Fixed token app this is a JSON body with `TriggeredBy`, `Auth`, `ClientId` and `ClientSecret`. For a Refresh token app it is a form post with `token` (the refresh token) and `token_type_hint=refresh_token`, authenticated with HTTP Basic (`client_id:client_secret`). Your response does not change anything on our side.
 
 Please note that the samples in the repository currently implement the Fixed token mode.
 
 # Error handling
-Whenever an API call to the Api connector returns an HTTP error code, the EvaluationApi will try to deserialize the HTTP content to a given format. The error objects have a type parameter. 
-- SystemErrors are meant for the Evaluation API to use internally.
-- UserErrors may be shown to end users.
+Any 2xx response from your API connector counts as success, and its body is ignored. On any other status, return a JSON array like this:
+
+```json
+[
+  { "ErrorType": 1, "Message": "Text that may be shown to the ATS user" },
+  { "ErrorType": 0, "Message": "Technical detail for the ATS and Talentech support" }
+]
+```
+
+- `ErrorType` must be a number: `0` SystemError, `1` UserError. Property names are case-insensitive.
+- SystemError messages are technical details. They are passed to the ATS and logged, and are not meant for end users.
+- UserError messages may be shown to end users.
+
+We pass your HTTP status code and both messages on to the ATS, using the first entry of each type. If the body is not in this format, the ATS gets generic messages instead.
 
 # Correlation id
 Every call the Evaluation API makes to your API connector carries an `X-Correlation-ID` header. You may also send one on the calls you make to us (`/results`, `/permissions`): a value of 1 to 64 characters from `A-Z`, `a-z`, `0-9`, `.`, `_` and `-` is kept as is, anything else is replaced. The id comes back in the same header on every response. Quote it when you contact Talentech support about a specific call, so we can find that request in our logs.
 
 # Retry policies
-When results are posted back to Talentech by the partner, the Evaluation API will act as a gateway and forward the data to the ATS that sent the invitation. As the API calls may occasionally fail, it's important that the partner implements retry policies to ensure that the customer eventually receives their data. The retry policy should include an exponential backoff to prevent overloading the API.
+When results are posted back to Talentech by the partner, the Evaluation API will act as a gateway and forward the data to the ATS that sent the invitation. As the API calls may occasionally fail, it's important that the partner implements retry policies to ensure that the customer eventually receives their data. The retry policy should include an exponential backoff to prevent overloading the API. [Posting results](#posting-results) lists the responses that should not be retried.
+
+We retry as well. If your API connector answers an invitation with a `5xx` or `408`, or the connection fails, we send the same invitation again after 1, 5 and 10 seconds. Use `InvitationId` to recognise an invitation you already have. Answer within 100 seconds, and do slow work after you have answered. The evaluation forms call is retried the same way.
 
 # Sequence diagrams
 Below is a description of the flows we support. The one we'll use for a given partner's app is governed by the token type (Fixed or Refresh token) configured for the app in question.
@@ -99,55 +136,52 @@ The business logic for picking the right language when sending the actual invita
 ## Returning language preferences for each evaluation form
 When we call the `/evaluationforms` in the partner's API Connector, you as a partner can return all your available assessment tests or reference check forms. Each entry you return, can have an array with supported languages. 
 
-```
+```json
 [
   {
     "id": "8763f39e-0552-4ea0-b75d-6cba86d03166",
     "name": "My Assessment Test",
     "languages": [
       {
-        "name": "English", 
+        "name": "English",
         "languageCode": "en"
       },
       {
-        "name": "Norwegian", 
+        "name": "Norwegian",
         "languageCode": "nb-NO"
-      }      
+      }
     ],
-    "description": "This is an example assessment test",
-    ]
+    "description": "This is an example assessment test"
   }
 ]
 ```
 
 ## Choosing language for candidate invitations
-When the ATS triggers an invitation to the API Connector, we include a `preferredLanguage` field for each candidate. This field contains the preferred language in which the candidate would like to receive emails, see UI or any other language specific content. You as a partner need to use this `preferredLanguage` when sending email invitations, picking the right language version of the test/form or any other language related content you might have.
+When the ATS triggers an invitation to the API Connector, we include `EvaluationDetails.PreferredLanguage`. This field contains the preferred language in which the candidate would like to receive emails, see UI or any other language specific content. You as a partner need to use this `PreferredLanguage` when sending email invitations, picking the right language version of the test/form or any other language related content you might have.
 
-```
+```json
 {
-  "evaluationFormId": "string",
-  "preferredLanguage": "string",
-  "candidateDetails": {
-    "candidateId": "string",
-    "firstName": "string",
-    "lastName": "string",
-    "email": "string",
-    "phoneNumber": "string"
-  },
-  "noteToCandidate": "string",
-  "tenantId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "invitationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "integrationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "projectId": "string",
-  "projectName": "string",
-  ...
+  "Version": 1,
+  "EvaluationDetails": {
+    "InvitationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "EvaluationFormId": "string",
+    "ProjectId": "string",
+    "ProjectName": "string",
+    "CandidateId": "string",
+    "FirstName": "Jane",
+    "LastName": "Doe",
+    "Email": "jane.doe@example.com",
+    "PhoneNumber": "+46700000000",
+    "PreferredLanguage": "en",
+    "NoteToCandidate": "string"
+  }
 }
 ```
 
-## Language codes
-The language code format is based on the ISO 639 two-letter lowercase culture code. If you are using a different format on your language codes, you need to handle the mapping between our codes and your codes in the API Connector.
+This example is shortened. The full payload is in [docs/payload-examples/invitation.json](docs/payload-examples/invitation.json).
 
-Examples: nb-NO, en, en-US, en-GB
+## Language codes
+`PreferredLanguage` comes from the ATS unchanged. It is usually a two-letter ISO 639-1 code (`en`, `nb`, `sv`, `da`), but it can include a region (`nb-NO`, `en-US`, `en-GB`). If you use a different format for your language codes, map our codes to yours in the API Connector.
 
 ## Supported languages in Talentech
 |Language|Code|Talent Recruiter|ReachMee|Webcruiter|

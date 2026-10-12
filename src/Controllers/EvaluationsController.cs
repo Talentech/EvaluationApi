@@ -4,6 +4,7 @@ using Talentech.EvaluationApi.SamplePartnerApiConnector.Config;
 using Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Common;
 using Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Evaluations;
 using Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Evaluations.CustomFields;
+using Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Encryption;
 
 namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
 {
@@ -12,6 +13,13 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
 
     public class EvaluationsController : ControllerBase
     {
+        private readonly IEncryptionService _encryptionService;
+
+        public EvaluationsController(IEncryptionService encryptionService)
+        {
+            _encryptionService = encryptionService;
+        }
+
         /// <summary>
         /// This endpoint should return all the available criteria/questionnaires from the Partner's API
         /// </summary>
@@ -22,6 +30,9 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
         [ProducesResponseType(typeof(List<ErrorDto>), 500)]
         public ActionResult<List<EvaluationDto>> GetEvaluationForms(GetEvaluationsRequestDto requestDto)
         {
+            // TriggeredBy can arrive encrypted here too, as on invitations.
+            _encryptionService.Decrypt(requestDto.TriggeredBy);
+
             // The requestDto should uniquely identify a customer's account at the Partner's side, and only data relevant for that customer should be returned
             var res = new List<EvaluationDto>
             {

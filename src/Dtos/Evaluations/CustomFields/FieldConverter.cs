@@ -11,6 +11,10 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Evaluations.Cus
         {
             { FieldTypes.SelectList, typeof(SelectListDto)},
             { FieldTypes.Checkbox, typeof(CheckboxDto)},
+            { FieldTypes.TextInput, typeof(TextInputDto)},
+            { FieldTypes.Paragraph, typeof(ParagraphDto)},
+            { FieldTypes.Header, typeof(HeaderDto)},
+            { FieldTypes.SubHeader, typeof(SubHeaderDto)},
         };
 
         public override bool CanConvert(Type typeToConvert) => typeof(FieldDto).IsAssignableFrom(typeToConvert);

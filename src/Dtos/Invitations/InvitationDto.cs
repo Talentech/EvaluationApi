@@ -24,8 +24,9 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         /// </summary>
         public T EvaluationDetails { get; set; }
         /// <summary>
-        /// The schema for this is controlled by the Partner. The contents here is identical to what is returned from the OAuth token endpoint.
+        /// Fixed token mode only: the response of your token endpoint, sent back exactly as you returned it.
+        /// In Refresh token mode this is null and the access token comes in the Authorization: Bearer header.
         /// </summary>
-        public ExamplePartnerTokenDto Auth { get; set; }
+        public ExamplePartnerTokenDto? Auth { get; set; }
     }
 }

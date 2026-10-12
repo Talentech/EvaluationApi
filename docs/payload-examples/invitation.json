@@ -1,9 +1,7 @@
 {
   "Version": 1,
   "TriggeredBy": {
-    "EncryptedFields": [
-      "FirstName"
-    ],
+    "EncryptedFields": [],
     "Email": "recruiter@example.com",
     "FirstName": "string",
     "LastName": "string",
@@ -17,9 +15,7 @@
     "ProjectId": "string",
     "ProjectName": "string",
     "CandidateId": "string",
-    "EncryptedFields": [
-      "FirstName"
-    ],
+    "EncryptedFields": [],
     "PersonalId": null,
     "FirstName": "string",
     "LastName": "string",
@@ -39,7 +35,7 @@
     ]
   },
   "Auth": {
-    "access_token": "string",
-    "refresh_token": "string"
+    "CustomerAccountId": "string",
+    "PartnerApiRefreshToken": "string"
   }
 }

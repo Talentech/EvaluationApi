@@ -38,6 +38,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Services.Encryption
         {
             var props = obj.GetType().GetProperties();
 
+            // Only top-level names are handled here; "Address.CareOf" and the other Address.* names are left encrypted.
             foreach (var field in obj.EncryptedFields)
             {
                 var piEncryptedField =

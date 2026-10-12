@@ -20,10 +20,11 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
         /// <param name="state"></param>
         /// <param name="redirect_uri"></param>
         /// <param name="response_type"></param>
+        /// <param name="scope">Sent only when scopes are configured for your app, space separated.</param>
         /// <returns></returns>
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet(Constants.PartnerUrls.AuthorizationEndpoint)]
-        public IActionResult Index(string client_id, string state, string redirect_uri, string response_type)
+        public IActionResult Index(string client_id, string state, string redirect_uri, string response_type, string? scope = null)
         {
             var code = "A one-time-use, randomly generated authorization code";
             return Redirect($"{redirect_uri}?state={state}&code={code}");
