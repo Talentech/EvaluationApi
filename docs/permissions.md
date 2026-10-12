@@ -59,6 +59,6 @@ The published set:
 | 410 | the invitation belongs to an integration that has been archived |
 | 502 | the ATS could not answer |
 
-A 502 usually means the ATS that sent the invitation has no permissions endpoint configured with us. That
-is set per ATS, not per customer, so it applies to every invitation from that ATS. It is a configuration
-matter on our side, not something wrong in your request. Ask us and we will check it rather than retrying.
+A 502 usually means the ATS that sent the invitation is not set up to answer permission requests yet. That
+is a configuration matter on our side, not something wrong in your request. Ask us and we will check it
+rather than retrying.

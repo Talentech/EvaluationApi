@@ -24,7 +24,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         /// </summary>
         public T EvaluationDetails { get; set; }
         /// <summary>
-        /// Fixed token mode only: the response of your token endpoint, sent back exactly as you returned it.
+        /// Fixed token mode only: the same JSON your token endpoint returned.
         /// In Refresh token mode this is null and the access token comes in the Authorization: Bearer header.
         /// </summary>
         public ExamplePartnerTokenDto? Auth { get; set; }

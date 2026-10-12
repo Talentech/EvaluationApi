@@ -29,7 +29,8 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvcCore()
+            // Missing values arrive as null, so non-nullable properties must not be treated as required.
+            services.AddMvcCore(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true)
                 .AddAuthorization()
                 .AddJsonOptions(options =>
                 {

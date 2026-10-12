@@ -10,7 +10,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Common
         [EncryptedField] public string LastName { get; set; } = null!;
 
         /// <summary>
-        /// Set only on invitations, when the ATS sends it. Always null on evaluation forms and deauthorization requests.
+        /// Sent on invitations, when the ATS has it.
         /// </summary>
         [EncryptedField] public string? ExternalUserIdentifier { get; set; }
     }

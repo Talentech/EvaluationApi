@@ -5,17 +5,17 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Authorization
     /// <summary>
     /// Sent to your deauthorize endpoint in Fixed token mode when a customer disconnects the integration.
     /// Refresh token apps get a form post instead (token, token_type_hint=refresh_token, HTTP Basic client_id:client_secret).
-    /// We have already deleted our stored token, and your response does not change anything on our side.
+    /// The response is not used.
     /// </summary>
     public class DeauthorizationRequestDto
     {
         /// <summary>
-        /// The customer's admin user who disconnected the integration. EncryptedFields is always empty here.
+        /// The customer's admin user who disconnected the integration.
         /// </summary>
         public TriggeredByDto TriggeredBy { get; set; }
 
         /// <summary>
-        /// The stored response of your token endpoint, exactly as you returned it.
+        /// The same JSON your token endpoint returned.
         /// </summary>
         public ExamplePartnerTokenDto Auth { get; set; }
 

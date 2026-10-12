@@ -226,14 +226,14 @@ const encryptedPayload = {
     FirstName: encryptor("Jane"),
     LastName: encryptor("Doe"),
     Email: encryptor("jane.doe@example.com"),
-    PhoneNumber: encryptor("+46700000000"),
+    PhoneNumber: encryptor("+46701740605"),
     PreferredLanguage: "nl-NL",
     NoteToCandidate: "Note to the candidate",
     CustomFieldValues: [],
   },
 };
 console.log(encryptedPayload);
-// Example output:
+// Example output (illustrative, the encrypted values differ on every run):
 // …
 // EncryptedFields: [ 'FirstName', 'LastName', 'Email', 'PhoneNumber' ],
 // FirstName: '5c0f11d9fa72e022032afe82e2eb234e:XWmIRGIrn0rbSkrWgeEN-7el7S32bdVah9hLlLGQC9NlbUCsByGFyQxYJwk7aA3vrAmfEhW3HDfzbSrogsFfNQ07nSNJy-JdGs06Pkq01CSjAsL33pRkZh5ygL6C8FW-5Oe1-qoV8-FWegxcC3GOLx7sqrbIirGmSqoOnbPX-a_77HBuT7pQ1TKyYr4K6vkHgA3gpsu1t-AET_04jrZbJ81hhHwdqnAoVdV3G23AvNRgfxwioJ6FafUlUGydHG5jDLycPj-jvBTeZjByd0_bGZ9hRi94zkXYcD6FzF6Ymb4saRVH9-Ys8Oxv25QWE_pIPrU3OsDm0U1IT1l_Rn93GA==',

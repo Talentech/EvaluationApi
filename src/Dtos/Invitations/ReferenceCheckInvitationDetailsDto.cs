@@ -44,8 +44,8 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
 
         /// <summary>
         /// The candidate personal ID. Optional to use by the partner.
-        /// Today only sent on Contract invitations, where the signing provider needs to identify the
-        /// signer. Optional on every evaluation type, so do not rely on it being null elsewhere.
+        /// Sent on Contract invitations, where the signing provider needs to identify the
+        /// signer. It may be null on any evaluation type.
         /// </summary>
         /// <remarks>
         /// * Can be encrypted
@@ -80,8 +80,8 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
 
         /// <summary>
         /// The address of the candidate. Optional to use by the partner.
-        /// Today only sent on Contract invitations, where the signing provider needs to identify the
-        /// signer. Optional on every evaluation type, so do not rely on it being null elsewhere.
+        /// Sent on Contract invitations, where the signing provider needs to identify the
+        /// signer. It may be null on any evaluation type.
         /// </summary>        
         public PartnerAddressDto? Address { get; init; }          
         

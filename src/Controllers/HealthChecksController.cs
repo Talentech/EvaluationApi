@@ -11,7 +11,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
     public class HealthChecksController : ControllerBase
     {
         /// <summary>
-        /// The Evaluation API does not call this endpoint today. It is kept as an example of a health response.
+        /// Reports the health of the integration for a customer's account.
         /// </summary>
         /// <param name="requestDto"></param>
         /// <returns></returns>

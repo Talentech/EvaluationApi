@@ -5,7 +5,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Common
     public class ErrorDto
     {
         /// <summary>
-        /// Sent as a number: 0 = SystemError, 1 = UserError. The Evaluation API does not read the name.
+        /// Send it as a number: 0 = SystemError, 1 = UserError.
         /// </summary>
         public ErrorType ErrorType { get; set; }
         public string Message { get; set; }

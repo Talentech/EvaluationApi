@@ -12,7 +12,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Results
             public Guid InvitationId { get; set; }
 
             /// <summary>
-            /// Required. Passed to the ATS as it is.
+            /// Required.
             /// </summary>
             public InvitationStatus Status { get; set; }
 

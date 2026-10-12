@@ -25,9 +25,10 @@ The array of custom fields is _ordered_, that means that the content is displaye
 The Evaluation API reads your whole response at once. One field that breaks a rule below makes the whole response unreadable, and the ATS gets an error instead of your forms.
 - The response is a JSON array. An empty array is fine.
 - Every custom field has a `type` from the list above. Any other value, a different casing or a missing `type` breaks the response.
+- The key that holds the type is named `type` (or `Type`).
 - `disabled` and the `value` of a checkbox are `true` or `false`, never `null`.
 - A select list always has `options`.
-- The `customFields` array contains no `null` entries.
+- The forms array and the `customFields`, `languages`, `scoreProfiles` and `options` arrays contain no `null` entries.
 
 Property names are case-insensitive, and properties we do not know are ignored.
 
@@ -203,4 +204,4 @@ will result in the following rendering of the form:
 ![Custom Fields Example](images/20210702_custom_fields_full_example.png)
 
 ## Values in the invitation
-What the user enters comes back in the invitation, in `EvaluationDetails.CustomFieldValues`, as entries like `{ "Id": "<id of the custom field>", "Value": "<string>" }`. The value is always a string: `"true"` or `"false"` for a checkbox, the `id` of the chosen option for a select list, and the entered text for a text input.
+What the user enters comes back in the invitation, in `EvaluationDetails.CustomFieldValues`, as entries like `{ "Id": "<id of the custom field>", "Value": "<string>" }`. The value is always a string: the `id` of the chosen option for a select list, the entered text for a text input, and for a checkbox `"true"` or `"false"` as the ATS sent it. Some ATSes send `"True"` or `"False"`, so compare checkbox values without regard to case.

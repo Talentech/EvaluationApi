@@ -87,7 +87,7 @@ The payload is in [payload-examples/invitation.json](payload-examples/invitation
 
 The partner posts results back to the EvaluationAPI whenever there are updates. Results can be posted back 0 or more times per invitation.
 
-The partner can post multiple scores back by using the `scoreProfiles`. Each score should map to a scoreProfile ID matching the available scoreProfiles indicated in the EvaluationForms returned in step 1. The Evaluation API does not check this; the ATS uses the ID to look up the name. The actual score is set in the `score` property of each score profile and must be a number. The root `score` is a string.
+The partner can post multiple scores back by using the `scoreProfiles`. Each score should map to a scoreProfile ID matching the available scoreProfiles indicated in the EvaluationForms returned in step 1, as the ATS uses the ID to look up the name. The actual score is set in the `score` property of each score profile and is a number, for example `6.5`. The root `score` is a string.
 
 The root `score` property will be deprecated, and is kept for backwards compatibility.
 
