@@ -6,7 +6,7 @@ Score Profiles is a feature that facilitates returning results with multiple sco
 
 ### 1. ATS requests available evaluation forms for tenant
 
-The ATS requests all available evaluation forms for the tenant. The context must be looked up by the partner by looking at the auth info and the triggeredBy info. NB: The context is not project specific atm. Note the addition of the `ScoreProfiles` list to the schema:
+The ATS requests all available evaluation forms for the tenant. The context must be looked up by the partner by looking at the auth info and the triggeredBy info. The request carries `ProjectId` when the ATS sends one, otherwise it is `null`. Note the addition of the `ScoreProfiles` list to the schema:
 
 #### EvaluationForms ScoreProfiles schema
 
@@ -18,20 +18,24 @@ The ATS requests all available evaluation forms for the tenant. The context must
 
 #### Example EvaluationForms JSON structure
 
-`POST /v1/EvaluationForms`
+`POST {ApiBaseUrl}/evaluationforms`, a call to your API connector.
 
 Request body:
 
-_No project context._
-
 ```json
 {
-  "triggeredBy": {
-    "email": "string",
-    "firstName": "string",
-    "lastName": "string"
+  "TriggeredBy": {
+    "EncryptedFields": [],
+    "Email": "recruiter@example.com",
+    "FirstName": "string",
+    "LastName": "string",
+    "ExternalUserIdentifier": null
   },
-  "auth": {}
+  "Auth": {
+    "CustomerAccountId": "string",
+    "PartnerApiRefreshToken": "string"
+  },
+  "ProjectId": "string"
 }
 ```
 
@@ -53,8 +57,9 @@ Response:
       {
         "id": "string",
         "label": "string",
-        "type": "string",
-        "disabled": true
+        "type": "checkbox",
+        "disabled": true,
+        "value": false
       }
     ],
     "scoreProfiles": [
@@ -74,44 +79,15 @@ An invitation is sent. This is always done in context of a projectId and for a s
 
 #### Example Invitations JSON structure
 
-`POST /v1/Invitations`
+`POST {ApiBaseUrl}/invitations`, a call to your API connector.
 
-```json
-{
-  "version": 0,
-  "triggeredBy": {
-    "email": "string",
-    "firstName": "string",
-    "lastName": "string"
-  },
-  "evaluationDetails": {
-    "invitationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "evaluationFormId": "string",
-    "sourceSystem": "string",
-    "projectId": "string",
-    "projectName": "string",
-    "firstName": "string",
-    "lastName": "string",
-    "email": "string",
-    "phoneNumber": "string",
-    "preferredLanguage": "string",
-    "noteToCandidate": "string",
-    "customFieldValues": [
-      {
-        "id": "string",
-        "value": "string"
-      }
-    ]
-  },
-  "auth": {}
-}
-```
+The payload is in [payload-examples/invitation.json](payload-examples/invitation.json).
 
 ### 3. Results posted back by the partner
 
-The partner posts results back to the EvaluationAPI whenever there are updates. Results can be postedback 0 or more times per invitation.
+The partner posts results back to the EvaluationAPI whenever there are updates. Results can be posted back 0 or more times per invitation.
 
-The partner can post multiple scores back by using the `scoreProfiles`. Each score must map to a scoreProfile ID matching the available scoreProfiles indicated in the EvaluationForms returned in step 1. The actual score should be set in the `score` property and should be a numeric value.
+The partner can post multiple scores back by using the `scoreProfiles`. Each score should map to a scoreProfile ID matching the available scoreProfiles indicated in the EvaluationForms returned in step 1, as the ATS uses the ID to look up the name. The actual score is set in the `score` property of each score profile and is a number, for example `6.5`. The root `score` is a string.
 
 The root `score` property will be deprecated, and is kept for backwards compatibility.
 
@@ -124,7 +100,7 @@ The root `score` property will be deprecated, and is kept for backwards compatib
 
 #### Example Results JSON structure
 
-`POST /v1/Results`
+`POST {Evaluation API base URL}/v1/Results`, see the [README](../README.md#posting-results).
 
 ```json
 {
@@ -143,7 +119,7 @@ The root `score` property will be deprecated, and is kept for backwards compatib
   "scoreProfiles": [
     {
       "id": "string",
-      "score": "float"
+      "score": 6.5
     }
   ]
 }

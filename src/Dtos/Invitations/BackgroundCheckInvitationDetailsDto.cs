@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations;
 
-public class BackgroundCheckInvitationDetailsDto
+public class BackgroundCheckInvitationDetailsDto : IEncryptedPayload
 {
         /// <summary>
         /// Unique id of the invitation. Must be included when posting results back to the EvaluationApi.
@@ -18,8 +18,9 @@ public class BackgroundCheckInvitationDetailsDto
 
         /// <summary>
         /// A public key in the format keyId:publicKey. If supplied, the ATS supports encrypted fields.
+        /// Null when the ATS does not support encryption.
         /// </summary>
-        public string SourceSystemPublicKey { get; set; }
+        public string? SourceSystemPublicKey { get; set; }
 
         /// <summary>
         /// The ATS project id. Optional to use by the partner. Not necessarily unique across multiple customers.
@@ -44,8 +45,8 @@ public class BackgroundCheckInvitationDetailsDto
 
         /// <summary>
         /// The candidate personal ID. Optional to use by the partner.
-        /// Only populated on a Contract invitation, where the signing provider needs to identify the
-        /// signer. Null on every other evaluation type.
+        /// Sent on Contract invitations, where the signing provider needs to identify the
+        /// signer. It may be null on any evaluation type.
         /// </summary>
         /// <remarks>
         /// * Can be encrypted
@@ -76,12 +77,12 @@ public class BackgroundCheckInvitationDetailsDto
         /// The phone number of the candidate. Included if available and applicable in ATSes
         /// </summary>
         [EncryptedField]
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
         /// <summary>
         /// The address of the candidate. Optional to use by the partner.
-        /// Only populated on a Contract invitation, where the signing provider needs to identify the
-        /// signer. Null on every other evaluation type.
+        /// Sent on Contract invitations, where the signing provider needs to identify the
+        /// signer. It may be null on any evaluation type.
         /// </summary>        
         public PartnerAddressDto? Address { get; init; }          
         
@@ -93,7 +94,7 @@ public class BackgroundCheckInvitationDetailsDto
         /// <summary>
         /// Can be included in email or in a greeting to the candidate. Optionally sent from ATSes, so a default text should be inserted by partner (if applicable)
         /// </summary>
-        public string NoteToCandidate { get; set; }
+        public string? NoteToCandidate { get; set; }
 
         /// <summary>
         /// Talentech's id of the department / org unit the recruitment project belongs to. It follows the
@@ -118,5 +119,8 @@ public class BackgroundCheckInvitationDetailsDto
         /// </summary>
         public List<FieldValueDto> CustomFieldValues { get; set; }
 
+        /// <summary>
+        /// Names of the encrypted fields in EvaluationDetails, for example "FirstName" or "Address.CareOf".
+        /// </summary>
         public IEnumerable<string> EncryptedFields { get; set; } = Enumerable.Empty<string>();
 }

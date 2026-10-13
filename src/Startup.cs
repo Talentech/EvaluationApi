@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,13 +29,13 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvcCore()
+            // Missing values arrive as null, so non-nullable properties must not be treated as required.
+            services.AddMvcCore(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true)
                 .AddAuthorization()
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
                     options.JsonSerializerOptions.PropertyNamingPolicy = null;
-                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
 
             var tokenServerConfig = Configuration.GetSection("TokenServerConfig").Get<TokenServerConfig>();

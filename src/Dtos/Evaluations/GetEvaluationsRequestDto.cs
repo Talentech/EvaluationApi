@@ -10,8 +10,14 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Evaluations
         public TriggeredByDto TriggeredBy { get; set; }
 
         /// <summary>
-        /// The schema for this is controlled by the Partner. The contents here is identical to what is returned from the OAuth token endpoint.
+        /// Fixed token mode only: the same JSON your token endpoint returned.
+        /// In Refresh token mode this is null and the access token comes in the Authorization: Bearer header.
         /// </summary>
-        public ExamplePartnerTokenDto Auth { get; set; }
+        public ExamplePartnerTokenDto? Auth { get; set; }
+
+        /// <summary>
+        /// The ATS project the forms are requested for, when the ATS sends one. Otherwise null.
+        /// </summary>
+        public string? ProjectId { get; set; }
     }
 }
