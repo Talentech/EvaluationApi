@@ -97,6 +97,7 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Controllers
             // ContractInvitationDetailsDto
             // BackgroundCheckInvitationDetailsDto
             // FeedbackInvitationDetailsDto
+            // BoardingInvitationDetailsDto
             await _service.SendUpdateToEvaluationApi(requestDto.EvaluationDetails.InvitationId.ToString(),
                 statusUpdate);
 

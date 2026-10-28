@@ -46,6 +46,7 @@ The published set:
 | `assessmenttest-report:read` | reading the assessment test results |
 | `contract-report:read` | reading the contract data |
 | `feedback-report:read` | reading the feedback report |
+| `boarding-report:read` | reading the boarding report |
 | `invitation:create` | creating invitations |
 
 ## Status codes

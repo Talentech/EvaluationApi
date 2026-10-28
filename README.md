@@ -19,7 +19,7 @@ You can also subscribe to [Talentech's status page](https://status.talentech.inf
 - ATS - Application Tracking System. The source system triggering the invitation.
 - API Connector - A facade API controlled by the Partner. This is what will connect the Evaluation API and the Partner App's APIs. 
 - Invitations - An invitation for a candidate. This will be sent from the Evaluation API to the API connector
-- Results - Status updates and results for an invitation (reference check, assessment test, background check, contract or feedback). These are posted from the API connector back to the Evaluation API
+- Results - Status updates and results for an invitation (reference check, assessment test, background check, contract, feedback or boarding). These are posted from the API connector back to the Evaluation API
 - ApiBaseUrl - The base url of the Api Connector. This is used to resolve the endpoints the Evaluation API expects the API connector to make available.
 - Evaluation API base URL - The base URL for calling the Evaluation API, given to you by Talentech, for example `https://<host>/api`. Paths in these docs, such as `/v1/Results`, are relative to it.
 - Talentech token endpoint - The endpoint you get access tokens from when you call the Evaluation API, given to you by Talentech together with your client id and client secret.
