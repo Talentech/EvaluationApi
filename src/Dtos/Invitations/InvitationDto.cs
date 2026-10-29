@@ -19,7 +19,8 @@ namespace Talentech.EvaluationApi.SamplePartnerApiConnector.Dtos.Invitations
         /// * ReferenceCheckInvitationDetailsDto
         /// * ContractInvitationDetailsDto
         /// * BackgroundCheckInvitationDetailsDto
-        /// * FeedbackInvitationDetailsDto,
+        /// * FeedbackInvitationDetailsDto
+        /// * BoardingInvitationDetailsDto,
         /// depending on the type of service the Partner provides
         /// </summary>
         public T EvaluationDetails { get; set; }
